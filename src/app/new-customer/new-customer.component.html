@@ -1,0 +1,332 @@
+<div class=container-fluid>
+  <div class="row">
+    <div class="col-lg-2 col-md-0 col-sm-0 col-xs-0">
+      <app-sidebar></app-sidebar>
+    </div>
+    <div class="col-lg-10 col-md-12 col-sm-12 col-xs-12">
+
+      <div>
+        <div class="d-md-flex justify-content-between align-items-center mt-3 mb-3">
+          <h4 class="mb-0">{{Heading}} Customers</h4>
+
+          <div class="d-md-flex">
+            <div class="input-group mt-2 pt-1 pt-md-0 mt-md-0">
+              <input type="text" placeholder="Search Customer" class="form-control" id="myInput">
+              <div class="input-group-prepend"><span class="input-group-text border-left-0"><i
+                    class="fa fa-search px-1"></i></span></div>
+            </div>
+            <div ngbDropdown class="d-inline-block  ml-md-3  mt-3 mt-md-0">
+              <button style="border: 1px solid #dee2e6!important;box-shadow: 3px 3px 4px #a0a0a0;"
+                class="btn btn-default" id="dropdownBasic1" ngbDropdownToggle>Add</button>
+              <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                <button ngbDropdownItem (click)="openVerticallyCentered(content)">Customer</button>
+                <button ngbDropdownItem (click)="createProduct(content54671)">News paper</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style="cursor: pointer;" class="d-inline-flex mb-4">
+        <div class="p-2  short_cuts_color mr-2" *ngFor="let item of filtersLabels;index as i"  
+        [ngClass]="{'short_cuts_color_onClick':item.applyColor}" (click)="item.applyColor=true" 
+        (click)="filters(item.label)">{{item.label}}</div>
+      </div>
+      <div class="row">
+        <div *ngFor="let item of customersData" class="col-xl-3 col-lg-3 col-md-4 col-sm-12 px-custom-card mb-3">
+          <div class="card">
+            <div style="cursor: pointer;">
+              <div class="card-body text-center pt-0 mt-4">
+                <img src="https://www.gravatar.com/avatar/e102c74c9566066a4801f7e0d42eade6.jpg?s=200&amp;d=mm"
+                  width="50" height="50" class="rounded"><br>
+                <div class="row">
+                  <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12  ">Name</div>
+                  <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12  ">
+                    <h6>{{item.details[0].name}}</h6>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 ">Mobile</div>
+                  <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 ">
+                    <h6>{{item.mobileNumber}}</h6>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">Due</div>
+                  <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 ">
+                    <h6>{{item.totalAmount}}</h6>
+                  </div>
+                </div>
+                <!-- <div class="d-inline-flex">
+                                    <div class="p-2">name</div>
+                                    <div class="p-2">{{item.details[0].name}}</div>
+                                </div> 
+                                <div class="d-inline-flex">
+                                    <div class="p-2">Mobile</div>
+                                    <div class="p-2">{{item.mobileNumber}}</div>
+                                </div> 
+                                <div class="d-inline-flex">
+                                    <div class="p-2">Due</div>
+                                    <div class="p-2">{{item.totalAmount}}</div>
+                                </div>  -->
+              </div>
+            </div>
+            <div class="card-footer">
+              <div class="d-flex justify-content-between align-items-center">
+                <div style="cursor: pointer;"><i class="fa">&#xf044;</i> <span>Edit</span></div>
+                <div style="cursor: pointer;" (click)="deleteCustomer(item.id)"><i class="fa fa-trash-o"
+                    style="color: red;"></i>
+                  <span>Delete</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div class="btn btn-primary" style="float: right;" (click)="next8Objs()">Next</div>
+    </div>
+    <!--Create Customer -->
+    <ng-template #content let-modal>
+      <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Create Customer</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-lg-6">
+            <form #singup="ngForm">
+              <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" class="form-control" placeholder="Name" name="name" #name="ngModel"
+                  [(ngModel)]="customer.name" [class.is-invalid]="name.invalid && name.touched" required ngModel>
+                <small class="text-danger" [class.d-none]="name.valid || name.untouched">Name field required </small>
+              </div>
+              <div class="form-group">
+                <label for="number">Mobile Number</label>
+                <input type="text" class="form-control" placeholder="Mobile Number" name="mobileNumber"
+                  #mobileNumber="ngModel" [(ngModel)]="customer.mobileNumber" pattern="[1-9]{1}[0-9]{9}"
+                  [class.is-invalid]="mobileNumber.invalid && mobileNumber.touched" required ngModel>
+                <small class="text-danger" [class.d-none]="mobileNumber.valid || mobileNumber.untouched">Mobile Number
+                  is
+                  required and Must be 10 digits </small>
+              </div>
+              <div class="form-group">
+                <label for="plotnumber">Plot Number</label>
+                <input type="text" class="form-control" placeholder="Plot Number" name="plotNumber"
+                  [class.is-invalid]="plotNumber.invalid && plotNumber.touched" #plotNumber="ngModel"
+                  [(ngModel)]="customer.plotNumber" required ngModel>
+                <small class="text-danger" [class.d-none]="plotNumber.valid || plotNumber.untouched">plot number
+                  required
+                </small>
+              </div>
+              <div class="form-group">
+                <label for="number">Lines</label>
+                <select class="custom-select" name="line" required #line="ngModel" [(ngModel)]="customer.lineId"
+                  [class.is-invalid]="line.invalid && line.touched" ngModel>
+                  <option value="" disabled selected>Choose line</option>
+                  <option [ngValue]="items.lineId" *ngFor="let items of allLines">{{items.lineName}}</option>
+                </select>
+                <small class="text-danger" [class.d-none]="line.valid || line.untouched">Field required</small>
+              </div>
+            </form>
+          </div>
+          <div class="col-lg-6">
+            <form #customerS2="ngForm" style="height:306px;overflow-y:auto;">
+              <div *ngFor="let obj of paperslist;let i = index">
+                <div class="form-group">
+                  <label for="sel1">Newspaper Type:-</label>
+                  <select class="form-control" id="sel1" [(ngModel)]="obj.productType" name="productType{{i}}" ngModel
+                    (ngModelChange)="showDateForNewCustomer(obj.productType)">
+                    <option value="" selected disabled>Choose Newspaper type</option>
+                    <option [ngValue]="items.value" *ngFor="let items of productType">{{items.key}}</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="number">Newspaper</label>
+                  <select class="custom-select" name="newspaper{{i}}" required #newspaper="ngModel" [(ngModel)]="obj.id"
+                    [class.is-invalid]="newspaper.invalid && newspaper.touched" ngModel>
+                    <option value="" disabled selected>Choose Newspaper</option>
+                    <option [ngValue]="items.id" *ngFor="let items of obj.newsPapers">
+                      {{items.productName}}</option>
+                  </select>
+                  <small class="text-danger" [class.d-none]="newspaper.valid || newspaper.untouched">Field
+                    required</small>
+                </div>
+                <div class="form-group">
+                  <label for="addtionalCharges">Additional Charges</label>
+                  <input type="text" class="form-control" placeholder="Addtional Charges" #addtionalCharges="ngModel"
+                    name="addtionalCharges{{i}}" [(ngModel)]="obj.aCharges">
+                </div>
+                <div *ngIf="showDate">
+                  <div class="form-group">
+                    <label for="startDate">Start Date</label>
+                    <form class="form-inline">
+                      <div class="form-group">
+                        <div class="input-group">
+                          <input class="form-control" placeholder="yyyy-mm-dd" displayMonths="1"
+                            [(ngModel)]="obj.ProductStartDate" navigation="none" #startDate="ngModel"
+                            name="startDate{{i}}" [class.is-invalid]="startDate.invalid && startDate.touched" required
+                            ngModel ngbDatepicker #d="ngbDatepicker">
+                          <div class="input-group-append">
+                            <button class="btn btn-outline-secondary calendar" (click)="d.toggle()"
+                              type="button"></button>
+                          </div>
+                        </div>
+                      </div>
+                    </form>
+                    <small class="text-danger" [class.d-none]="startDate.valid || startDate.untouched">Field
+                      required</small>
+                  </div>
+                </div>
+              </div>
+            </form>
+            <button (click)="addNewsPaper()" class="btn btn-primary float-right">+</button>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" [disabled]="singup.form.invalid" class="btn btn-primary"
+          (click)="modal.close('Save click')" (click)="saveCustomer(customer,paperslist)">Save</button>
+      </div>
+    </ng-template>
+    <!--Create Customer Ends-->
+
+    <!-- create product starts -->
+    <ng-template #content54671 let-modal>
+      <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Add Newspaper</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-lg-6">
+            <div class="radio">
+              <label><input type="radio" name="optradio" (change)="weekWise1('weekwise')" checked>Week Wise</label>
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <div class="radio">
+              <label><input type="radio" name="optradio" (change)="weekWise1('daywise')">Day Wise</label>
+            </div>
+          </div>
+        </div>
+        <hr>
+        <div *ngIf="weekWise">
+          <div class="form-group row">
+            <label for="dateOfBirth" class="col-sm-2 col-form-label">Name :</label>
+            <div class="col-sm-10 col-form-label">
+              <input class="form-control" placeholder="Name of the Product"
+                [class.is-invalid]="product_name.invalid && product_name.touched" name="product_name"
+                #product_name="ngModel" [(ngModel)]="weekwise.productName" required>
+              <span> <small class="text-danger" [class.d-none]="product_name.valid || product_name.untouched">Name field
+                  required </small></span>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-6">
+              <tr>
+                <td>Monday:</td>
+                <td>
+                  <div class="form-group">
+                    <input type="number" name="name" class="form-control" id="name"
+                      [(ngModel)]="weekwise.productPrice.mon">
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>Wednesday:</td>
+                <td>
+                  <div class="form-group">
+                    <input type="number" name="name" class="form-control" id="name"
+                      [(ngModel)]="weekwise.productPrice.wednes">
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>Friday:</td>
+                <td>
+                  <div class="form-group">
+                    <input type="number" name="name" class="form-control" id="name"
+                      [(ngModel)]="weekwise.productPrice.fri">
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>Sunday:</td>
+                <td>
+                  <div class="form-group">
+                    <input type="number" name="name" class="form-control" id="name"
+                      [(ngModel)]="weekwise.productPrice.sun">
+                  </div>
+                </td>
+              </tr>
+
+            </div>
+            <div class="col-lg-6">
+              <tr>
+                <td>Tueday:</td>
+                <td>
+                  <div class="form-group">
+                    <input type="number" name="name" class="form-control" id="name"
+                      [(ngModel)]="weekwise.productPrice.tue">
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>Thurday:</td>
+                <td>
+                  <div class="form-group">
+                    <input type="number" name="name" class="form-control" id="name"
+                      [(ngModel)]="weekwise.productPrice.thur">
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>Satday:</td>
+                <td>
+                  <div class="form-group">
+                    <input type="number" name="name" class="form-control" id="name"
+                      [(ngModel)]="weekwise.productPrice.sat">
+                  </div>
+                </td>
+              </tr>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="dayWise">
+          <form #listName="ngForm">
+            <div class="form-group">
+              <label for="dateOfBirth">Name</label>
+              <div class="input-group">
+                <input class="form-control" placeholder="Name of Product"
+                  [class.is-invalid]="product_name.invalid && product_name.touched" name="product_name"
+                  #product_name="ngModel" [(ngModel)]="daywise.productName" required>
+                <span> <small class="text-danger" [class.d-none]="product_name.valid || product_name.untouched">Name
+                    field
+                    required </small></span>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="dateOfBirth">Price</label>
+              <div class="input-group">
+                <input class="form-control" placeholder="Price of Product" type="text"
+                  [class.is-invalid]="product_price.invalid && product_price.touched" name="product_price"
+                  #product_price="ngModel" [(ngModel)]="daywise.productPrice" required>
+                <span> <small class="text-danger" [class.d-none]="product_price.valid || product_price.untouched">Price
+                    field required </small></span>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" (click)="addProduct(dayWise,weekWise)"
+          (click)="modal.close('Save click')">Add</button>
+      </div>
+    </ng-template>
+    <!-- create product Ends -->
+  </div>
+</div>

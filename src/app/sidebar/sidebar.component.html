@@ -1,0 +1,92 @@
+<div class="container">
+  <div class="row">
+    <div class="container-flex">
+      <div id="wrapper">
+        <div class="container-fluid">
+          <div class="row justify-content-between">
+            <nav id="sidebar">
+
+              <!-- --------------------------------------------------- -->
+              <nav id="sidebar">
+                <ul class="list-unstyled components">
+                  <li class="active">
+                    <a href="#"  aria-expanded="false" (click)="isLinesCollapsed = !isLinesCollapsed" 
+                    class="dropdown-toggle">Lines</a>
+                    <ul class="collapse list-unstyled" [ngbCollapse]="isLinesCollapsed" id="homeSubmenu">
+                      <li *ngFor="let items of listofLines">
+                        <div class="row">
+                          <div class="col">
+                            <a href="#">{{items.lineName}}</a>
+                          </div>
+                          <div class="col"><i style="color:red" class="fa fa-trash-o"></i></div>
+                          <div class="col"><i class="fa fa-edit" (click)="openModal(content,'editLine',items)"></i></div>
+                        </div>   
+                      </li>
+                    </ul>
+                  </li>
+                  <li class="active">
+                    <a href="#"  aria-expanded="false" (click)="isProductCollapsed = !isProductCollapsed" 
+                    class="dropdown-toggle">NewsPapers</a>
+                    <ul class="collapse list-unstyled"  [ngbCollapse]="isProductCollapsed" id="homeSubmenu">
+                      <li *ngFor="let items of newspapers">
+                        <div class="row">
+                          <div class="col">
+                            <a href="#">{{items.productName}}</a> 
+                          </div>
+                          <div class="col"><i style="color:red" class="fa fa-trash-o"></i></div>
+                          <div class="col"><i class="fa fa-edit"></i></div>
+                        </div>                       
+                      </li>
+                    </ul>
+                  </li>
+                </ul> 
+                <ul class="list-unstyled CTAs">
+                  <li (click)="openModal(content,'addLine','')"><a class="download">Add Line</a></li>
+                </ul> 
+              </nav>
+
+              <!-- --------------------------------------------------- -->
+
+
+
+
+
+              <!-- <ul class="list-unstyled components">
+                <li *ngFor="let items of listofLines" (click)="showCustomer(items.lineId)">
+                  <a href="#">{{items.lineName}}</a></li>
+              </ul>
+              <ul class="list-unstyled CTAs">
+                <li (click)="openModal(content)"><a class="download">Add Line</a></li>
+              </ul> -->
+            </nav>
+          </div>
+        </div>
+      </div>
+      <ng-template #content let-modal>
+        <div class="modal-header">
+          <h4 class="modal-title" id="modal-basic-title">{{lineType}} Line</h4>
+          <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form #listName="ngForm">
+            <!-- {{line  |json}} -->
+            <div class="form-group">
+              <label for="dateOfBirth">Name</label>
+              <div class="input-group">
+                <input class="form-control" placeholder="Enter Name of Line"
+                  [class.is-invalid]="line_name.invalid && line_name.touched" placeholder="Enter Line Name"
+                  name="line_name" #line_name="ngModel" [(ngModel)]="line.lineName" required>
+                <span> <small class="text-danger" [class.d-none]="line_name.valid || line_name.untouched">Name field
+                    required </small></span>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" [disabled]="listName.form.invalid" class="btn btn-primary"
+            (click)="modal.close('Save click')" (click)="addLine(line,linebuttonType)">{{linebuttonType}}</button>
+        </div>
+      </ng-template>
+    </div>

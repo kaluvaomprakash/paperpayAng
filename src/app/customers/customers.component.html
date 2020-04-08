@@ -1,0 +1,493 @@
+<div class=container-fluid>
+  <div class="row">
+    <div class="col-lg-2 col-md-0 col-sm-0 col-xs-0" style="background:#7386D5;">
+      <app-sidebar></app-sidebar>
+    </div>
+    <div class="col-lg-10 col-md-12 col-sm-12 col-xs-12">
+
+      <div class="container" style="margin-top: 60px;">
+        <div class="row">
+          <div class="col-2">
+            <!-- <div (click)="openVerticallyCentered(content)"
+              style="border: 1px solid #dee2e6!important;box-shadow: 3px 3px 4px #a0a0a0;" class="btn btn-default"><i
+                class="fa fa-plus"></i>Create</div>   -->
+            <div ngbDropdown class="d-inline-block">
+              <button style="border: 1px solid #dee2e6!important;box-shadow: 3px 3px 4px #a0a0a0;"
+                class="btn btn-default" id="dropdownBasic1" ngbDropdownToggle>Add</button>
+              <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                <button ngbDropdownItem (click)="openVerticallyCentered(content)">Customer</button>
+                <button ngbDropdownItem (click)="createProduct(content54671)">News paper</button>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-8">
+            <div class="form-group">
+              <input class="form-control input-sm" placeholder="Search" id="inputsm" type="text">
+            </div>
+          </div>
+        </div>
+        <table class="table table-hover" style="border: 1px solid #dee2e6!important;box-shadow: 3px 3px 4px #a0a0a0;">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Mobile Number</th>
+              <th>password</th>
+              <th>Outstanding</th>
+              <th>Address</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr (click)="viewOneCustomer(viewmodel,items)" *ngFor="let items of customersData">
+              <td>{{items.details[0].name}}</td>
+              <td>{{items.mobileNumber}}</td>
+              <td>{{items.password}}</td>
+              <!-- <td *ngIf="items.paperType.length == 1">{{items.paperType[0].newspaper.name}}</td> -->
+              <!-- <td>
+                <div *ngFor="let itm of items.paperType">
+                  {{itm.newspaper.name}}
+                  <br>
+                </div>
+              </td> -->
+              <td>{{items.totalAmount}}</td>
+              <td>{{items.details[1].plotNumber}}</td>
+              <td *ngIf="items.isActive == '1' " href="#"><a>Active</a></td>
+              <td *ngIf="items.isActive != '1' " href="#"><a>Hold</a></td>
+              <td><i class="fa fa-edit"></i></td>
+              <td (click)="deleteCustomer(items.id)"><i style="color:red" class="fa fa-trash-o"></i></td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="btn btn-primary" style="float: right;" (click)="next8Objs()">Next</div>
+      </div>
+    </div>
+  </div>
+
+  <!--Create Customer -->
+  <ng-template #content let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Create Customer</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="row">
+        <div class="col-lg-6">
+          <form #singup="ngForm">
+            <div class="form-group">
+              <label for="name">Name</label>
+              <input type="text" class="form-control" placeholder="Name" name="name" #name="ngModel"
+                [(ngModel)]="customer.name" [class.is-invalid]="name.invalid && name.touched" required ngModel>
+              <small class="text-danger" [class.d-none]="name.valid || name.untouched">Name field required </small>
+            </div>
+            <div class="form-group">
+              <label for="number">Mobile Number</label>
+              <input type="text" class="form-control" placeholder="Mobile Number" name="mobileNumber"
+                #mobileNumber="ngModel" [(ngModel)]="customer.mobileNumber" pattern="[1-9]{1}[0-9]{9}"
+                [class.is-invalid]="mobileNumber.invalid && mobileNumber.touched" required ngModel>
+              <small class="text-danger" [class.d-none]="mobileNumber.valid || mobileNumber.untouched">Mobile Number is
+                required and Must be 10 digits </small>
+            </div>
+            <div class="form-group">
+              <label for="plotnumber">Plot Number</label>
+              <input type="text" class="form-control" placeholder="Plot Number" name="plotNumber"
+                [class.is-invalid]="plotNumber.invalid && plotNumber.touched" #plotNumber="ngModel"
+                [(ngModel)]="customer.plotNumber" required ngModel>
+              <small class="text-danger" [class.d-none]="plotNumber.valid || plotNumber.untouched">plot number required
+              </small>
+            </div>
+            <div class="form-group">
+              <label for="number">Lines</label>
+              <select class="custom-select" name="line" required #line="ngModel" [(ngModel)]="customer.lineId"
+                [class.is-invalid]="line.invalid && line.touched" ngModel>
+                <option value="" disabled selected>Choose line</option>
+                <option [ngValue]="items.lineId" *ngFor="let items of allLines">{{items.lineName}}</option>
+              </select>
+              <small class="text-danger" [class.d-none]="line.valid || line.untouched">Field required</small>
+            </div>
+          </form>
+        </div>
+        <div class="col-lg-6">
+          <form #customerS2="ngForm" style="height:306px;overflow-y:auto;">
+            <div *ngFor="let obj of paperslist;let i = index">
+              <div class="form-group">
+                <label for="sel1">Newspaper Type:-</label>
+                <select class="form-control" id="sel1" [(ngModel)]="obj.productType" name="productType{{i}}" ngModel
+                  (ngModelChange)="showDateForNewCustomer(obj.productType)">
+                  <option value="" selected disabled>Choose Newspaper type</option>
+                  <option [ngValue]="items.value" *ngFor="let items of productType">{{items.key}}</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="number">Newspaper</label>
+                <select class="custom-select" name="newspaper{{i}}" required #newspaper="ngModel" [(ngModel)]="obj.id"
+                  [class.is-invalid]="newspaper.invalid && newspaper.touched" ngModel>
+                  <option value="" disabled selected>Choose Newspaper</option>
+                  <option [ngValue]="items.id" *ngFor="let items of obj.newsPapers">
+                    {{items.productName}}</option>
+                </select>
+                <small class="text-danger" [class.d-none]="newspaper.valid || newspaper.untouched">Field
+                  required</small>
+              </div>
+              <div class="form-group">
+                <label for="addtionalCharges">Additional Charges</label>
+                <input type="text" class="form-control" placeholder="Addtional Charges" #addtionalCharges="ngModel"
+                  name="addtionalCharges{{i}}" [(ngModel)]="obj.aCharges">
+              </div>
+              <div *ngIf="showDate">
+                <div class="form-group">
+                  <label for="startDate">Start Date</label>
+                  <form class="form-inline">
+                    <div class="form-group">
+                      <div class="input-group">
+                        <input class="form-control" placeholder="yyyy-mm-dd" displayMonths="1"
+                          [(ngModel)]="obj.ProductStartDate" navigation="none" #startDate="ngModel"
+                          name="startDate{{i}}" (ngModelChange)="onClick()"
+                          [class.is-invalid]="startDate.invalid && startDate.touched" required ngModel ngbDatepicker
+                          #d="ngbDatepicker">
+                        <div class="input-group-append">
+                          <button class="btn btn-outline-secondary calendar" (click)="d.toggle()"
+                            type="button"></button>
+                        </div>
+                      </div>
+                    </div>
+                  </form>
+                  <small class="text-danger" [class.d-none]="startDate.valid || startDate.untouched">Field
+                    required</small>
+                </div>
+              </div>
+            </div>
+          </form>
+          <button (click)="addNewsPaper()" class="btn btn-primary float-right">+</button>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" [disabled]="singup.form.invalid" class="btn btn-primary" (click)="modal.close('Save click')"
+        (click)="saveCustomer(customer,paperslist)">Save</button>
+    </div>
+  </ng-template>
+  <!--Create Customer Ends-->
+  <!-- show one customer modal starts -->
+  <ng-template #viewmodel let-modal1>
+    <div class="modal-header">
+      <!-- <h4 class="modal-title" id="modal-basic-title">Create Customer</h4>-->
+      <button type="button" class="close" aria-label="Close" (click)="modal1.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <!--{{onecustomer|json}}-->
+      <div class="row">
+        <!--<div class="col-lg-2"></div>--->
+        <div class="col-lg-8">
+          <tr>
+            <td>Name : </td>
+            <td>{{onecustomer?.details[0].name}}</td>
+          </tr>
+          <tr>
+            <td>Mobile Number : </td>
+            <td>{{onecustomer?.mobileNumber}}</td>
+          </tr>
+          <tr>
+            <td>Password : </td>
+            <td>{{onecustomer?.password}}</td>
+          </tr>
+          <tr>
+            <td>Address : </td>
+            <td>{{onecustomer?.details[1].plotNumber}}</td>
+          </tr>
+          <tr>
+            <td>Status : </td>
+            <td *ngIf="onecustomer?.isActive == '1' " href="#"><a>Active</a>
+              <div (click)="customerInactive(markInactive,onecustomer,'Active')"
+                style="color: blue;text-decoration: underline;">Mark
+                Inactive</div>
+            </td>
+            <td *ngIf="onecustomer?.isActive != '1' " href="#"><a>Hold</a>
+              <div (click)="customerInactive(markInactive,onecustomer,'Hold')"
+                style="color: blue;text-decoration: underline;">Mark
+                active</div>
+            </td>
+          </tr><br>
+
+          <div class="card">
+            <div class="card-header">Payment</div>
+            <div class="card-body">No Payment Yet would you like to
+              <a style="color: blue;text-decoration: underline;cursor: pointer;"
+                (click)="paymentReciveModalopen(recivePayment,onecustomer)">Recive a payment</a> </div>
+          </div>
+          <td style="font-weight: bold;">Newspapers </td>
+          <hr>
+          <div *ngFor="let itm of customerProducts; let itemIndex=index">
+            <div style="text-align: center;text-decoration-line: underline;font-size: larger;">
+              {{itm.customerRelatedObj.productName}}
+            </div>
+            <div *ngIf="itm.customerRelatedObj.productHoldIsActive == '1' ">
+              <h5 style="color: red;">Newspaper stoped</h5>
+            </div>
+            <div *ngIf="itm.customerRelatedObj.productHoldIsActive != '1' ">
+              <!-- <h5 *ngIf="!closeproductHoldCaldr" style="color: red;">Paused paper</h5> -->
+              <div *ngIf="itm.customerRelatedObj.productHoldIsActive != '1' ">
+                <button class="btn btn-outline-danger" (click)="itm.isDatePickerShown=true">pause Delivery</button>
+                <div *ngIf="itm.isDatePickerShown">
+                  <ngb-datepicker displayMonths="1" [(ngModel)]="datePicker" navigation="none"
+                    (ngModelChange)="onClick()"></ngb-datepicker>
+                  <div>
+                    <h5 *ngIf="fromDateBoolean"> From Date : {{fromDate}}</h5><br>
+                    <h5 *ngIf="toDateBoolean"> To Date :{{toDate}}<br></h5>
+                    <button class="btn btn-outline-success" *ngIf="toDateBoolean" (click)=productPauseThing(itm)
+                      (click)="itm.customerRelatedObj.productHoldIsActive = '1' ">save</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-6">
+                <div>Month</div>
+                <div>Charges From:</div>
+                <div>Type</div>
+                <div>Monthly Charges :</div>
+                <div>Addtional Charges:</div>
+                <div *ngIf="itm.customerRelatedObj.productHoldIsActive == '1' ">
+                  <div>Hold start date :</div>
+                  <div>Hold end date :</div>
+                  <div>Hold Amount</div>
+                </div>
+
+              </div>
+              <div style="text-align: left;text-align: right;margin-right: -152px;" class="col-lg-6">
+                <div>{{itm.customerRelatedObj.month}}</div>
+                <div>
+                  {{itm.customerRelatedObj.productStartDate.dayOfMonth}}/{{itm.customerRelatedObj.productStartDate.month}}/{{itm.customerRelatedObj.productStartDate.year}}-{{itm.customerRelatedObj.productEndDate.dayOfMonth}}/{{itm.customerRelatedObj.productEndDate.month}}/{{itm.customerRelatedObj.productEndDate.year}}
+                </div>
+                <div>{{itm.customerRelatedObj.isRecursive}}</div>
+                <div>{{itm.customerRelatedObj.productMonthlyPrice}}</div>
+                <div>{{itm.customerRelatedObj.productAddationalCharges}}</div>
+                <div *ngIf="itm.customerRelatedObj.productHoldIsActive == '1' ">
+                  <div>{{itm.productHold.productHoldStartDate}}</div>
+                  <div>{{itm.productHold.productHoldEndDate}}</div>
+                  <div>{{itm.productHold.holdProductAmount}}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div style="margin-left: 230px;">-----------</div>
+          <tr>
+            <td>
+              <div style="float: left;font-weight: bold;">Total Outstanding :</div>
+              <div style="float: right;margin-left: 110px;">{{onecustomer.totalAmount}}</div>
+            </td>
+          </tr>
+        </div>
+        <!-- <div class="col-lg-2"></div> -->
+      </div>
+
+    </div>
+    <div class="modal-footer">
+      <!-- <button type="button" class="btn btn-primary" (click)="modal1.close('Save click')">Save</button> -->
+    </div>
+  </ng-template>
+  <!-- show customer modal Ends -->
+
+  <!-- create product starts -->
+  <ng-template #content54671 let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Add Newspaper</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="row">
+        <div class="col-lg-6">
+          <div class="radio">
+            <label><input type="radio" name="optradio" (change)="weekWise1('weekwise')" checked>Week Wise</label>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="radio">
+            <label><input type="radio" name="optradio" (change)="weekWise1('daywise')">Day Wise</label>
+          </div>
+        </div>
+      </div>
+      <hr>
+      <div *ngIf="weekWise">
+        <div class="form-group row">
+          <label for="dateOfBirth" class="col-sm-2 col-form-label">Name :</label>
+          <div class="col-sm-10 col-form-label">
+            <input class="form-control" placeholder="Name of the Product"
+              [class.is-invalid]="product_name.invalid && product_name.touched" name="product_name"
+              #product_name="ngModel" [(ngModel)]="weekwise.productName" required>
+            <span> <small class="text-danger" [class.d-none]="product_name.valid || product_name.untouched">Name field
+                required </small></span>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-6">
+            <tr>
+              <td>Monday:</td>
+              <td>
+                <div class="form-group">
+                  <input type="text" name="name" class="form-control" id="name" [(ngModel)]="weekwise.productPrice.mon">
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>Wednesday:</td>
+              <td>
+                <div class="form-group">
+                  <input type="text" name="name" class="form-control" id="name"
+                    [(ngModel)]="weekwise.productPrice.wednes">
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>Friday:</td>
+              <td>
+                <div class="form-group">
+                  <input type="text" name="name" class="form-control" id="name" [(ngModel)]="weekwise.productPrice.fri">
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>Sunday:</td>
+              <td>
+                <div class="form-group">
+                  <input type="text" name="name" class="form-control" id="name" [(ngModel)]="weekwise.productPrice.sun">
+                </div>
+              </td>
+            </tr>
+
+          </div>
+          <div class="col-lg-6">
+            <tr>
+              <td>Tueday:</td>
+              <td>
+                <div class="form-group">
+                  <input type="text" name="name" class="form-control" id="name" [(ngModel)]="weekwise.productPrice.tue">
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>Thurday:</td>
+              <td>
+                <div class="form-group">
+                  <input type="text" name="name" class="form-control" id="name"
+                    [(ngModel)]="weekwise.productPrice.thur">
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>Satday:</td>
+              <td>
+                <div class="form-group">
+                  <input type="text" name="name" class="form-control" id="name" [(ngModel)]="weekwise.productPrice.sat">
+                </div>
+              </td>
+            </tr>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="dayWise">
+        <form #listName="ngForm">
+          <div class="form-group">
+            <label for="dateOfBirth">Name</label>
+            <div class="input-group">
+              <input class="form-control" placeholder="Name of Product"
+                [class.is-invalid]="product_name.invalid && product_name.touched" name="product_name"
+                #product_name="ngModel" [(ngModel)]="daywise.productName" required>
+              <span> <small class="text-danger" [class.d-none]="product_name.valid || product_name.untouched">Name field
+                  required </small></span>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="dateOfBirth">Price</label>
+            <div class="input-group">
+              <input class="form-control" placeholder="Price of Product" type="text"
+                [class.is-invalid]="product_price.invalid && product_price.touched" name="product_price"
+                #product_price="ngModel" [(ngModel)]="daywise.productPrice" required>
+              <span> <small class="text-danger" [class.d-none]="product_price.valid || product_price.untouched">Price
+                  field required </small></span>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-primary" (click)="addProduct(dayWise,weekWise)"
+        (click)="modal.close('Save click')">Add</button>
+    </div>
+  </ng-template>
+  <!-- create product Ends -->
+
+  <!--alert modal for making customer inactive-->
+  <ng-template #markInactive let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Customer Inactive</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div>
+        Are you sure you want to mark inactive customers<br>
+        1.By marking This Customer inActive won't recive any SMS services
+      </div>
+      <div>
+
+      </div>
+    </div>
+    <div class="modal-footer">
+      <!-- <button type="button" class="btn btn-outline-secondary" (click)="customerInactive(markInactive)">Cancel</button> -->
+      <button type="button" class="btn btn-danger" (click)="modal.close('Ok click')">Ok</button>
+    </div>
+  </ng-template>
+
+  <!-- Payment Modal start -->
+  <ng-template #recivePayment let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Recive Payment</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body form-horizontal">
+      <div class="form-group row">
+        <label class="control-label col-4 labelKey">CUSTOMER</label>
+        <div class="col-8 form-control-static labelValues">{{paymentRecivedCustomer.details[0].name}}</div>
+      </div>
+      <div class="form-group row">
+        <label class="control-label col-4 labelKey">MOBILE</label>
+        <div class="col-8 form-control-static labelValues">{{paymentRecivedCustomer.mobileNumber}}</div>
+      </div>
+      <hr>
+      <div class="form-group row">
+        <label class="control-label col-4 labelKey">RECIVED ON</label>
+        <div class="col-8 form-control-static labelValues"> <input type="date"></div>
+      </div>
+      <div class="form-group row">
+        <label class="control-label col-4 labelKey">METHOD</label>
+        <div class="col-4 form-control-static labelValues">
+          <div class="form-group">
+            <select class="form-control" id="sel1">
+              <option value="" selected disabled>Methods</option>
+              <option [ngValue]="items.value" *ngFor="let items of RecivePaymentsMethods">{{items.key}}</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="control-label col-4 labelKey">AMOUNT</label>
+        <div class="col-8 form-control-static labelValues">{{paymentRecivedCustomer.totalAmount}}</div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button"  class="btn btn-primary"
+       (click)="modal.close('Save click')"
+        (click)="recivePaymentCreate(paymentRecivedCustomer)">Create</button>
+    </div>
+  </ng-template>
+  <!-- payment modal -->
+</div>

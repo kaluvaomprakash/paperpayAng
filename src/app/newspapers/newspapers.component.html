@@ -1,0 +1,128 @@
+<div class=container-fluid>
+    <div class="row">
+        <div class="col-lg-2 col-md-0 col-sm-0 col-xs-0">
+            <app-sidebar></app-sidebar>
+        </div>
+        <div class="col-lg-10 col-md-12 col-sm-12 col-xs-12">
+            <div class="container-fluid">
+                <div class="row m-0 pt-4">
+                    <div class="tabs">
+                        <ul role="tablist" class="nav nav-tabs">
+                            <li role="presentation" class="nav-item"><a role="tab" aria-selected="false"
+                                    aria-setsize="4" aria-posinset="1" target="_self" class="nav-link" tabindex="-1"
+                                    (click)="onClickNavNewsPapers('Newspapers')" style="color: blue;">Newspaper</a></li>
+                            <li role="presentation" class="nav-item"><a role="tab" aria-selected="false"
+                                    aria-setsize="4" aria-posinset="2" target="_self" class="nav-link" tabindex="-1"
+                                    (click)="onClickNavNewsPapers('Lines')" style="color: blue;">Lines</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-12 col-md-12 col-sm-12 p-0 bg-light">
+                        <div class="container-fluid bg-light p-0">
+                            <div class="d-md-flex justify-content-between align-items-center pb-4">
+                                <h4 class="mb-0"> {{navClickHeading}}</h4>
+                            </div>
+                            <div *ngIf="sheffalTabs">
+                                <div class="row px-2" *ngIf="sheffalTabs">
+                                    <div *ngFor="let itm of hackerProduct"
+                                        class="col-xl-4 col-lg-3 col-md-4 col-sm-12 px-custom-card mb-3">
+                                        <div class="card">
+                                            <div class="card-header"><b>{{itm.product.productName}}</b></div>
+                                            <div class="card-body">
+                                                <h6> {{thisMonth}} Monthly Charges : 280</h6>
+                                                <h6>No. Of Customers Linked this NewsPaper : {{itm.countOfCustomer}}
+                                                </h6>
+                                                <a style="float: right;color: blue;"
+                                                    (click)="OpenProductModal(itm,content)"><u>click me</u></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div *ngIf="!sheffalTabs">
+                                <div class="row">
+                                    <div *ngFor="let itm of lines"
+                                        class="col-xl-4 col-lg-3 col-md-4 col-sm-12 px-custom-card mb-3">
+                                        <div class="card">
+                                            <div class="card-header"><b>{{itm.lineName}}</b></div>
+                                            <div class="card-body">
+                                                <h6>No. Of Customers Linked this line :10
+                                                </h6>
+                                                <a style="float: right;color: blue;"><u>click me</u></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <ng-template #content let-modal>
+                            <div class="modal-header">
+                                <h4 class="modal-title" id="modal-basic-title">{{viewOneProduct.product.productName}}
+                                </h4>
+                                <button type="button" class="close" aria-label="Close"
+                                    (click)="modal.dismiss('Cross click')">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="col-lg-3">
+                                            Newspaper <br>
+                                            No of Customer linked with paper<br>
+                                            paper type<br>
+                                            {{viewOneProduct.product.productName}} monthly Price<br>
+                                            Day Prices <br><br><br><br><br><br><br><br><br>
+
+                                        </div>
+                                        <div class="col-lg-9">
+                                            :- {{viewOneProduct.product.productName}}<br>
+                                            :-{{viewOneProduct.countOfCustomer}}<br><br>
+                                            :-{{viewOneProduct.product.productType}}<br>
+                                            :-280<br><br><br>
+                                            <tr>
+                                                <th>Monday</th>
+                                                <th></th>: {{viewOneProduct.product.productPrice.mon}}
+                                            </tr>
+                                            <tr>
+                                                <th>Tuesday</th>
+                                                <th></th>: {{viewOneProduct.product.productPrice.tue}}
+                                            </tr>
+                                            <tr>
+                                                <th>Wednesday</th>
+                                                <th></th>: {{viewOneProduct.product.productPrice.wednes}}
+                                            </tr>
+                                            <tr>
+                                                <th>thursday</th>
+                                                <th></th>: {{viewOneProduct.product.productPrice.thur}}
+                                            </tr>
+                                            <tr>
+                                                <th>Friday</th>
+                                                <th></th>: {{viewOneProduct.product.productPrice.fri}}
+                                            </tr>
+                                            <tr>
+                                                <th>saturday</th>
+                                                <th></th>: {{viewOneProduct.product.productPrice.sat}}
+                                            </tr>
+                                            <tr>
+                                                <th>sunday</th>
+                                                <th></th>: {{viewOneProduct.product.productPrice.sun}}
+                                            </tr>
+
+
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+
+                            </div>
+                        </ng-template>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

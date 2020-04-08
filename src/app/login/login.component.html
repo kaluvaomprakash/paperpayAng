@@ -1,0 +1,41 @@
+<div class="container">
+    <div class="row">
+        <div class="col-lg-4"></div>
+        <div class="col-lg-5">
+            <div style="margin-top: 123px;  background: aliceblue;">
+                <h3 class="text-center font-weight-bold">Log in</h3>
+                <div *ngIf="loginFail" class="alert alert-danger" role="alert">
+                    Please check Mobile Number Or Password
+                </div>
+                <form #loginFormDetails="ngForm">
+                    <!--{{loginFormDetails.value |  json}}-->
+                    <div class="form-group">
+                        <label for="inputEmail">Mobile Number</label>
+                        <input type="text" pattern="[1-9]{1}[0-9]{9}" class="form-control" #mobileNumber="ngModel"
+                            [class.is-invalid]="mobileNumber.invalid && mobileNumber.touched" name="mobileNumber"
+                            id="inputEmail" placeholder="Mobile Number" required ngModel>
+                        <small class="text-danger" [class.d-none]="mobileNumber.valid || mobileNumber.untouched">Mobile
+                            Number is required and Must be 10 digits </small>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputPassword">Password</label>
+                        <input type="password" class="form-control" name="password" #password="ngModel"
+                            [class.is-invalid]="password.invalid && password.touched" id="inputPassword"
+                            placeholder="Password" data-toggle="password" required ngModel>
+                        <!--<div class="input-group-append">
+                        <div class="input-group-text"><i class="fa fa-eye"></i></div>
+                        </div>-->
+                        <small class="text-danger" [class.d-none]="password.valid || password.untouched">Password is
+                            required </small>
+                    </div>
+                    <div>
+                    </div>
+                    <button type="submit" [disabled]="loginFormDetails.form.invalid" class="btn btn-primary"
+                        (click)="loginSubmit(loginFormDetails.value)">Login</button>
+                </form>
+                <p>Don't Have an account ?<a routerLink="/signup">Create an account</a></p>
+            </div>
+        </div>
+        <div class="col-lg-3"></div>
+    </div>
+</div>

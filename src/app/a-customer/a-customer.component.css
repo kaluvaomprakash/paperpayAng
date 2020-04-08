@@ -1,0 +1,64 @@
+h6{  
+    margin: 5px 0 0 5px;
+    padding: 0;
+    font-size: 15px;
+    /* color: #6a6f73; */
+    letter-spacing: .94px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    font-family: ColfaxWeb,Helvetica,Arial,sans-serif;
+}
+h4{
+    font-family: Knewave;
+    margin: 0;
+    padding: 5px 0 0;
+    font-size: 32px;
+    font-weight: 400;
+    color: #353940;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+.labelKeys{
+    font-family: auto;
+    font-size: large;
+    /* font-size: 15px; */
+    font-weight: 400;
+}
+
+.labelKeyM{
+    text-align: right;
+    font-family: ColfaxWeb,Helvetica,Arial,sans-serif;
+    font-size: 12 px !important;
+    letter-spacing: .6px;
+    color:#5a6873;
+  }
+.comment_body_right{
+    background: #cfedfb;
+    float: right;
+    border-radius: 3px;
+    padding:5px 15px;
+    width:280px;
+}
+.commented_on_right{
+    clear: both;
+    text-align: right;
+    padding-right: 15px;
+    color: #909599;
+    font-size: 13px;
+    padding-top: 5px;
+}
+.comment_body_left{
+    background: #cfedfb;
+    border-radius: 3px;
+    padding:5px 15px;
+    width:280px;
+}
+.commented_on_left{
+    clear: both;
+    padding-right: 15px;
+    color: #909599;
+    font-size: 13px;
+    padding-top: 5px;
+}
