@@ -207,6 +207,9 @@ export class ACustomerComponent implements OnInit {
         //console.log("datat " + JOSN.stringify(this.allComments));
       })
   }
+  pushcode(){
+    
+  }
   ngOnInit() {
     this.customer();
     this.productsOfCustomer();
