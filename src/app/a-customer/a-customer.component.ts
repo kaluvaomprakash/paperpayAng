@@ -208,7 +208,7 @@ export class ACustomerComponent implements OnInit {
       })
   }
   pushcode(){
-    
+    console.log();
   }
   ngOnInit() {
     this.customer();
