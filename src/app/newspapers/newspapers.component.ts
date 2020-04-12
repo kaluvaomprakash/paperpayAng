@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { RestServiceService } from '../rest-service.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-newspapers',
@@ -9,7 +10,8 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 })
 export class NewspapersComponent implements OnInit {
 
-  constructor(private restService: RestServiceService, private modalService: NgbModal) { }
+  constructor(private restService: RestServiceService, private modalService: NgbModal
+    , private toaster: ToastrService) { }
   hackerProduct = [];
   monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
   thisMonth;
@@ -17,6 +19,11 @@ export class NewspapersComponent implements OnInit {
   sheffalTabs: boolean = true;
   viewOneProduct;
   lines;
+  line = { "name": "" };
+  lineType: String;
+  linebuttonType: String = "Add";
+  clickedLineId
+  //methods
   OpenProductModal(itm, content) {
     console.log("data " + JSON.stringify(itm));
     this.viewOneProduct = itm;
@@ -64,8 +71,10 @@ export class NewspapersComponent implements OnInit {
   }
 
   Listlines() {
+    //  debugger;
     var lid = JSON.parse(localStorage.getItem("lastname"));
-    var getlines = "http://localhost:8080/spring-crm-rest/lines/lin/"  + lid.hacker_id;
+    //var getlines = "http://localhost:8080/spring-crm-rest/lines/lin/"  + lid.hacker_id;
+    var getlines = "http://localhost:8080/nestpay/lines/customerInLines"
     this.restService.getCustomers(getlines).subscribe(
       (data) => {
         this.lines = data;
@@ -93,12 +102,52 @@ export class NewspapersComponent implements OnInit {
       countOfDaysinMonths["fri"] = fri, countOfDaysinMonths["sat"] = sat, countOfDaysinMonths["sun"] = sun;
     return countOfDaysinMonths;
   }
+  deleteline(id) {
+    console.log(id)
+    var url = "http://localhost:8080/nestpay/lines/removeline/" + id
+    //this.restService.delete(url).subscribe(()=>{});
+  }
+  addLine(line, buttontype) {
 
+    console.log(JSON.stringify(line) + " " + buttontype);
+    console.log("line" + JSON.stringify(line));
+    if (buttontype == "Add") {
+      var url = "http://localhost:8080/nestpay/lines/removeline";
+      this.restService.postData(url, (line)).subscribe(
+        (data) => {
+          this.toaster.success("Line Added successfully", "Success");
+          this.Listlines();
+          console.log(data);
+        });
+    }
+    else {
+      debugger;
+      console.log("inelse" + JSON.stringify(line));
+      line["id"] = this.clickedLineId;
+      var url = "http://localhost:8080/nestpay/lines/updateLine";
+      this.restService.updateCall(url, line).subscribe(
+        (date) => {
+          this.toaster.success("Line updated successfully", "Success");
+          this.Listlines();
+          this.lines.name = '';
+        });
+    }
+
+  }
+
+  openLineModal(openlineModla, lineTyp, lineDet) {
+    console.log(" line " + JSON.stringify(lineDet));
+    // this.line.lineName = lineDet.lineName;
+    if (lineTyp == 'addLine') { this.lineType = "Create"; this.linebuttonType = "Add"; }
+    else { this.lineType = "Edit"; this.linebuttonType = "Update"; this.clickedLineId = lineDet.line.id; this.line.name = lineDet.line.name }
+    this.modalService.open(openlineModla, { centered: true, size: 'sm' });
+  }
 
   ngOnInit() {
     var date = new Date();
     this.thisMonth = this.monthNames[date.getMonth()];
-    this.listOfHackerProduct();
+    //this.listOfHackerProduct();
+    //this.Listlines();
   }
 
 }

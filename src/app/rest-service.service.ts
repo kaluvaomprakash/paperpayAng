@@ -53,14 +53,18 @@ export class RestServiceService {
 
     );
   }
-  updateCall(puturl, data) {
-    this.http.put(puturl, data).subscribe(data => {
-      console.log("updated successful " + data);
-    })
+  updateCall(puturl, data) : Observable<RestServiceService[]>{
+    return this.http.put<RestServiceService[]>(puturl, data);
+    // this.http.put(puturl, data).subscribe(data => {
+    //   console.log("updated successful " + data);
+    // })
   }
   putCallWithObserable(puturl, data): Observable<RestServiceService[]> {
     debugger;
     return this.http.post<RestServiceService[]>(puturl, data)
+  }
+  delete(url,id):Observable<RestServiceService[]>{
+    return this.http.delete<RestServiceService[]>(url);
   }
 
 

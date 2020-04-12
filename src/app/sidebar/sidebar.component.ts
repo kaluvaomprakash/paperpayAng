@@ -28,28 +28,28 @@ export class SidebarComponent implements OnInit {
   }
   lineType: String;
   linebuttonType: String = "Add";
-  clickedLineId:number;
+  clickedLineId: number;
   openModal(content, lineTyp, lineDet) {
     console.log(" line " + JSON.stringify(lineDet));
     this.line.lineName = lineDet.lineName;
     if (lineTyp == 'addLine') { this.lineType = "Create"; this.linebuttonType = "Add"; }
-    else { this.lineType = "Edit"; this.linebuttonType = "Update"; this.clickedLineId =lineDet.lineId}
+    else { this.lineType = "Edit"; this.linebuttonType = "Update"; this.clickedLineId = lineDet.lineId }
     this.modalService.open(content, { centered: true, size: 'lg' });
   }
-  addLine(line,buttontype) {
+  addLine(line, buttontype) {
     //alert("line"+JSON.stringify(line));
-    console.log(JSON.stringify(line)+" "+buttontype);
+    console.log(JSON.stringify(line) + " " + buttontype);
     line["hackerId"] = this.hackerIdFromLsage;
     console.log("line" + JSON.stringify(line));
-    if(buttontype=="Add"){
+    if (buttontype == "Add") {
       var url = "http://localhost:8080/spring-crm-rest/lines/save";
       this.restService.postData(url, (line));
     }
-    else{
+    else {
       line["lineId"] = this.clickedLineId;
       console.log(JSON.stringify(line));
       var url = "http://localhost:8080/spring-crm-rest/lines/update";
-      this.restService.updateCall(url,line); 
+      this.restService.updateCall(url, line);
     }
   }
   newspapers;
@@ -63,7 +63,7 @@ export class SidebarComponent implements OnInit {
   }
   ngOnInit() {
     this.hackerIdFromLsage = JSON.parse(localStorage.getItem("lastname")).hacker_id;
-   // this.listOfLines(this.hackerIdFromLsage);
+    // this.listOfLines(this.hackerIdFromLsage);
     //this.getProducts();
   }
 
