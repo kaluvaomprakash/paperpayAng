@@ -63,8 +63,8 @@ export class SidebarComponent implements OnInit {
   }
   ngOnInit() {
     this.hackerIdFromLsage = JSON.parse(localStorage.getItem("lastname")).hacker_id;
-    this.listOfLines(this.hackerIdFromLsage);
-    this.getProducts();
+   // this.listOfLines(this.hackerIdFromLsage);
+    //this.getProducts();
   }
 
 }

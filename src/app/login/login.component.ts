@@ -23,11 +23,9 @@ export class LoginComponent implements OnInit {
   loginFail = false;
   logindata;
   loginSubmit(userEnterdDetails) {
-    var url = "http://localhost:8080/spring-crm-rest/hacker/check";
-    var obj = {};
-    obj["mobilenumber"] = userEnterdDetails.mobileNumber;
-    obj["pwd"] = userEnterdDetails.password;
-    this.http.post(url, obj).subscribe(responseData => {
+    var url = "http://localhost:8080/nestpay/hacker/check/"
+    +userEnterdDetails.mobileNumber+"/"+userEnterdDetails.password;
+    this.restService.getCallwithOut(url).subscribe(responseData => {
       console.log("POST Request is successful ", responseData);
       this.logindata = responseData
       if (this.logindata.count == '1') {
@@ -39,7 +37,7 @@ export class LoginComponent implements OnInit {
         console.log(nextDay);
         document.cookie = "PPtoken="+this.logindata.token+"; expires=nextDay; path=/;";
         localStorage.setItem("lastname", JSON.stringify(this.logindata));
-        this.router.navigateByUrl('customers');
+        this.router.navigateByUrl('newcustomers');
       }
       else {
         this.loginFail = true;

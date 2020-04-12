@@ -188,7 +188,8 @@ export class CustomersComponent implements OnInit {
     //  debugger;
     //this.pagelimit=8;slimit:number =0;
     var lid = JSON.parse(localStorage.getItem("lastname"));
-    let url = "http://localhost:8080/spring-crm-rest/Customers/h/" + this.slimit + "/" + this.elimit;
+   // let url = "http://localhost:8080/spring-crm-rest/Customers/h/" + this.slimit + "/" + this.elimit;
+   let url = "http://localhost:8080/nestpay/Customers/clist/" + this.slimit + "/" + this.elimit;
     this.restService.getCustomers(url).subscribe(
       (data) => {
         debugger;

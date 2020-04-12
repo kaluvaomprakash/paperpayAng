@@ -61,15 +61,15 @@ export class NewCustomerComponent implements OnInit {
 
   //methods
   getCustomers() {
-    //  debugger;
+      debugger;
     //this.pagelimit=8;slimit:number =0;
     var lid = JSON.parse(localStorage.getItem("lastname"));
-    let url = "http://localhost:8080/spring-crm-rest/Customers/h/" + this.slimit + "/" + this.elimit;
+    let url = "http://localhost:8080/nestpay/Customers/clist/" + this.slimit + "/" + this.elimit;
     this.restService.getCustomers(url).subscribe(
       (data) => {
         // this.customersData = [];
         this.customersData = data;
-        this.customersData = this.customersData["customers"];
+        //this.customersData = this.customersData["customers"];
         console.log("this.customersData " + this.customersData);
         for (var a in this.customersData) {
           var totalamount = 0;
@@ -86,7 +86,7 @@ export class NewCustomerComponent implements OnInit {
   deleteCustomer(id) {
     alert(id);
     debugger;
-    let url = "http://localhost:8080/spring-crm-rest/Customers/d/" + id;
+    let url = "http://localhost:8080/nestpay/Customers/d/" + id;
     console.log("url " + url);
     var body = {};
     this.restService.postData(url, body).subscribe(
