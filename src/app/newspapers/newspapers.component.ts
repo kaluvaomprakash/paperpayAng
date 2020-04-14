@@ -33,7 +33,8 @@ export class NewspapersComponent implements OnInit {
 
   listOfHackerProduct() {
     var lid = JSON.parse(localStorage.getItem("lastname"));
-    var getlines = "http://localhost:8080/spring-crm-rest/Customers/p/custCountPrduct/" + lid.hacker_id;
+   // var getlines = "http://localhost:8080/spring-crm-rest/Customers/p/custCountPrduct/" + lid.hacker_id;
+   var getlines = "http://localhost:8080/nestpay/products/custCountinProdct"
     this.restService.getCustomers(getlines).subscribe(
       (data) => {
         debugger;
@@ -105,7 +106,7 @@ export class NewspapersComponent implements OnInit {
   deleteline(id) {
     console.log(id)
     var url = "http://localhost:8080/nestpay/lines/removeline/" + id
-    //this.restService.delete(url).subscribe(()=>{});
+    //ngthis.restService.delete(url).subscribe(()=>{});
   }
   addLine(line, buttontype) {
 
@@ -146,8 +147,8 @@ export class NewspapersComponent implements OnInit {
   ngOnInit() {
     var date = new Date();
     this.thisMonth = this.monthNames[date.getMonth()];
-    //this.listOfHackerProduct();
-    //this.Listlines();
+    this.listOfHackerProduct();
+    
   }
 
 }

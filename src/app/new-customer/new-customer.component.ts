@@ -109,12 +109,12 @@ export class NewCustomerComponent implements OnInit {
     this.getProducts();
     //this.openCustomer = true;
     var lid = JSON.parse(localStorage.getItem("lastname"));
-    var getlines = "http://localhost:8080/spring-crm-rest/lines/lin/" + lid.hacker_id;
+    var getlines = "http://localhost:8080/nestpay/lines/";
     this.restService.getCustomers(getlines).subscribe(
       (data) => {
         this.allLines = data;
       });
-    this.modalService.open(content, { centered: true, size: 'lg' });
+    this.modalService.open(content, { centered: true, size: 'sm' });
   }
   addNewsPaper() {
     // var lid = JSON.parse(localStorage.getItem("lastname"));
@@ -194,7 +194,7 @@ export class NewCustomerComponent implements OnInit {
   }
   getProducts() {
     var lid = JSON.parse(localStorage.getItem("lastname"));
-    var getlines = "http://localhost:8080/spring-crm-rest/Customers/p/" + lid.hacker_id;
+    var getlines = "http://localhost:8080/nestpay/products/listfProducts";
     this.restService.getCustomers(getlines).subscribe(
       (data) => {
         this.newspapers = data;
@@ -218,7 +218,7 @@ export class NewCustomerComponent implements OnInit {
       dbobj["productPrice"] = JSON.stringify(this.weekwise.productPrice);
       dbobj["productType"] = "weekWise";
     }
-    let posturl = "http://localhost:8080/spring-crm-rest/Customers/p/newProduct";
+    let posturl = "http://localhost:8080/nestpay/products/newProduct";
     this.restService.postData(posturl, (dbobj)).subscribe(
       (data) => {
         debugger;

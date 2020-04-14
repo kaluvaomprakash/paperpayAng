@@ -125,7 +125,7 @@
                 <select class="custom-select" name="line" required #line="ngModel" [(ngModel)]="customer.lineId"
                   [class.is-invalid]="line.invalid && line.touched" ngModel>
                   <option value="" disabled selected>Choose line</option>
-                  <option [ngValue]="items.lineId" *ngFor="let items of allLines">{{items.lineName}}</option>
+                  <option [ngValue]="items.lineId" *ngFor="let items of allLines">{{items.name}}</option>
                 </select>
                 <small class="text-danger" [class.d-none]="line.valid || line.untouched">Field required</small>
               </div>

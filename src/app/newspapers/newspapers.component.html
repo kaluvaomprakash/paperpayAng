@@ -51,13 +51,22 @@
                                         <div class="card">
                                             <div class="card-header"><b>{{itm.product.productName}}</b></div>
                                             <div class="card-body">
-                                                <h6> {{thisMonth}} Monthly Charges : 280</h6>
-                                                <h6>No. Of Customers Linked this NewsPaper : {{itm.countOfCustomer}}
+                                                <!-- <h6> {{thisMonth}} Monthly Charges : 280</h6> -->
+                                                <h6>No. Of Customers Linked this NewsPaper : {{itm.count}}
                                                 </h6>
                                                 <a style="float: right;color: blue;"
                                                     (click)="OpenProductModal(itm,content)"><u>click me</u></a>
                                             </div>
+                                            <div class="card-footer">
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                  <div style="cursor: pointer;" ><i class="fa">&#xf044;</i> <span>Edit</span></div>
+                                                  <div style="cursor: pointer;" ><i class="fa fa-trash-o"
+                                                      style="color: red;"></i>
+                                                    <span>Delete</span></div>
+                                                </div>
+                                              </div>
                                         </div>
+                                        
                                     </div>
                                 </div>
                             </div>
@@ -84,6 +93,7 @@
                                 </div>
                             </div>
                         </div>
+                        <!-- products modal starts -->
                         <ng-template #content let-modal>
                             <div class="modal-header">
                                 <h4 class="modal-title" id="modal-basic-title">{{viewOneProduct.product.productName}}
@@ -97,7 +107,7 @@
                                 <div class="container">
                                     <div class="row">
                                         <div class="col-lg-3">
-                                            Newspaper <br>
+                                            Name <br>
                                             No of Customer linked with paper<br>
                                             paper type<br>
                                             {{viewOneProduct.product.productName}} monthly Price<br>
@@ -106,7 +116,7 @@
                                         </div>
                                         <div class="col-lg-9">
                                             :- {{viewOneProduct.product.productName}}<br>
-                                            :-{{viewOneProduct.countOfCustomer}}<br><br>
+                                            :-{{viewOneProduct.count}}<br><br>
                                             :-{{viewOneProduct.product.productType}}<br>
                                             :-280<br><br><br>
                                             <tr>
@@ -148,11 +158,13 @@
 
                             </div>
                         </ng-template>
+                        <!-- products modal Ends -->
                     </div>
 
                 </div>
             </div>
         </div>
+        <!-- line modal start  -->
         <ng-template #openlineModla let-modal>
             <div class="modal-header">
               <h4 class="modal-title" id="modal-basic-title">{{lineType}} Line</h4>
@@ -180,5 +192,6 @@
                 (click)="modal.close('Save click')" (click)="addLine(line,linebuttonType)">{{linebuttonType}}</button>
             </div>
           </ng-template>
+           <!-- line modal Ends  -->
     </div>
 </div>
