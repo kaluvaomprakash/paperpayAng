@@ -38,21 +38,22 @@ export class ACustomerComponent implements OnInit {
   statementHistroy=[];
   comment;
   allComments=[];
-
+ customerpaidStatus;
   //Methods
   customer() {
     var cutomerId = parseInt(this.router.snapshot.paramMap.get('id'));
-    this.restService.getCallwithOut("http://localhost:8080/spring-crm-rest/Customers/" + cutomerId).subscribe(
+    this.restService.getCallwithOut("http://localhost:8080/nestpay/Customers/" + cutomerId).subscribe(
       (data) => {
         data["details"] = JSON.parse(data["details"]);
         this.aCustomer = data;
+        this.customerpaidStatus =data["customerPaid"];
         console.log("datat" + this.aCustomer);
       })
   }
 
   productsOfCustomer() {
     var cutomerId = parseInt(this.router.snapshot.paramMap.get('id'));
-    this.restService.getCallwithOut("http://localhost:8080/spring-crm-rest/customerProduct/selectedCustmrPrdouct/" + cutomerId + "/0").subscribe(
+    this.restService.getCallwithOut("http://localhost:8080/nestpay/customerProducts/product/" + cutomerId + "/0").subscribe(
       (data) => {
         // debugger
         this.customerProductss = data;
@@ -72,29 +73,29 @@ export class ACustomerComponent implements OnInit {
     debugger;
 
     var custmer = this.aCustomer;
-    var products = this.customerProducts;
+    var products = this.customerProductss;
     var dbarray = [];
 
     //var productid = '', customerproudctId = '';
     for (var i = 0; i < products.length; i++) {
       var dbobj = {};
-      dbobj["hackerId"] = custmer.hId;
+      dbobj["hackerId"] = 0;
       dbobj["customerId"] = custmer.id;
       dbobj["paymentType"] = this.paymentMethodType;
       dbobj["amount"] = custmer.totalAmount;
       dbobj["paymentDate"] = this.todayDate;
       dbobj["isActive"] = 1;
-      dbobj['productId'] = products[i]['customerRelatedObj']['productId'];
-      dbobj['customerProductId'] = products[i]['customerRelatedObj']['id'];
-      dbobj["savemonth"] = products[i]['customerRelatedObj']['month'];
-      dbobj["year"] = products[i]['customerRelatedObj']['year'];
+      dbobj['productId'] = products[i]['productId'];
+      dbobj['customerProductId'] = products[i]['id'];
+      dbobj["month"] = products[i]['pMonth'];
+      dbobj["year"] = products[i]['year'];
       dbarray.push(dbobj);
     }
-    this.restService.postData("http://localhost:8080/spring-crm-rest/account/recivedPayment", dbarray).subscribe(
+    this.restService.postData("http://localhost:8080/nestpay/account/newaccount", dbarray).subscribe(
       (data) => {
         console.log("data" + data);
         this.customer();
-        this.showPayments(data)
+        //this.showPayments(data)
       }
     )
   }
@@ -112,20 +113,21 @@ export class ACustomerComponent implements OnInit {
     }
   }
   prepareProductsArray(arr) {
+    debugger;
     var date = new Date();
     var currentMonth = this.monthsInYear[date.getMonth()]
     this.onlyCustomerProducts = arr.map(
       (item) => {
-        if (item.customerRelatedObj.month == 'MARCH') {
+        if (item.pMonth == 'MARCH') {
           var months = {};
-          months['product'] = item.customerRelatedObj.productName;
-          months['id'] = item.customerRelatedObj.id;
-          months['productHoldStatus'] = item.customerRelatedObj.productHoldIsActive;
+          months['product'] = item.productName;
+          months['id'] = item.id;
+          months['productHoldStatus'] = item.holdIsActive;
           months["showDatePicker"] = false;
           months["closeDatePickerOnClickSave"] = true;
-          months["hackerId"] = item.customerRelatedObj.hackerId;
-          months["customerId"] = item.customerRelatedObj.customerId;
-          months["productId"] = item.customerRelatedObj.productId;
+          months["hackerId"] = item.hackerId;
+          months["customerId"] = item.customerId;
+          months["productId"] = item.productId;
           return months
         }
       }
@@ -178,7 +180,7 @@ export class ACustomerComponent implements OnInit {
   }
   statemtnHistory() {
     var cutomerId = parseInt(this.router.snapshot.paramMap.get('id'));
-    this.restService.getCallwithOut("http://localhost:8080/spring-crm-rest/account/statements/" + cutomerId).subscribe(
+    this.restService.getCallwithOut("http://localhost:8080/nestpay/account/statements/" + cutomerId).subscribe(
       (data) => {
         this.statementHistroy = data;
       })
@@ -213,8 +215,8 @@ export class ACustomerComponent implements OnInit {
   ngOnInit() {
     this.customer();
     this.productsOfCustomer();
-    this.statemtnHistory();
-    this.viewAllComments();
+   // this.statemtnHistory();
+    //this.viewAllComments();
   }
 
 }

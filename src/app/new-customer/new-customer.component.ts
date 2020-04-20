@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { RestServiceService } from '../rest-service.service';
 import { ToastrService } from 'ngx-toastr';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { error } from 'util';
+import { error, debug } from 'util';
 import { Router } from '@angular/router';
 
 @Component({
@@ -56,12 +56,14 @@ export class NewCustomerComponent implements OnInit {
   Heading: String = "All";
   onClickOfFilter_1: Boolean = false;
   filtersLabels = [{ "label": "All", "applyColor": false }, { "label": "Paid", "applyColor": false }, { "label": "Due", "applyColor": false }];
-
-
-
+  showProductsInModal: boolean = false;
+  buttonClickOFshowProudcts: boolean = true;
+  showACtextBox: any = [];
+  newUiproductObj: any = [];
+  emptyArray:any=[];
   //methods
   getCustomers() {
-      debugger;
+    // debugger;
     //this.pagelimit=8;slimit:number =0;
     var lid = JSON.parse(localStorage.getItem("lastname"));
     let url = "http://localhost:8080/nestpay/Customers/clist/" + this.slimit + "/" + this.elimit;
@@ -112,8 +114,21 @@ export class NewCustomerComponent implements OnInit {
     var getlines = "http://localhost:8080/nestpay/lines/";
     this.restService.getCustomers(getlines).subscribe(
       (data) => {
+        debugger
         this.allLines = data;
+        this.newUiproductObj = this.allLines.map(
+          (data, index) => {
+            //console.log(index);
+            var obj = {};
+            obj['aCharges'] = 0;
+            obj['productId']=0;
+            return obj;
+          }
+        )
+
+        console.log("array" + JSON.stringify(this.newUiproductObj));
       });
+
     this.modalService.open(content, { centered: true, size: 'sm' });
   }
   addNewsPaper() {
@@ -252,6 +267,36 @@ export class NewCustomerComponent implements OnInit {
   }
   testToaster() {
     this.toaster.error("some message", "title");
+  }
+  productCheck(i) {
+    this.showACtextBox[i] = true;
+  }
+  onClickNextCreateCustomer(customer) {
+    debugger;
+    console.log("customer " + JSON.stringify(customer));
+    var dbObj = {}; var newarr = [];
+    //dbObj["hId"] = (lid.hacker_id);
+    dbObj["lineId"] = customer.lineId;
+    dbObj["mobileNumber"] = customer.mobileNumber;
+    dbObj["password"] = "12345";
+    dbObj["totalAmount"] = 0;
+    dbObj["name"] = customer.name
+    dbObj["details"] = customer.plotNumber;
+    dbObj["isActive"] = 1;
+    dbObj["additionalCharges"] = 0;
+    let posturl = "http://localhost:8080/nestpay/Customers/newCustomer";
+    this.restService.postData(posturl, (dbObj)).subscribe(data => {
+      console.log("POST Request is successful ");
+      this.toaster.success("Customer Added successfully", "Success");
+      this.getCustomers();
+    },
+      error => {
+        this.toaster.error("please check your internet", "Failed");
+        console.log("Eerror", error);
+      }); ``
+  }
+  heartochageinprdoctui(newUiproductObj,event) {
+    console.log(JSON.stringify(newUiproductObj)+" "+JSON.stringify(event));
   }
   ngOnInit() {
     this.getCustomers();

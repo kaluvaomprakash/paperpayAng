@@ -27,9 +27,9 @@
         </div>
       </div>
       <div style="cursor: pointer;" class="d-inline-flex mb-4">
-        <div class="p-2  short_cuts_color mr-2" *ngFor="let item of filtersLabels;index as i"  
-        [ngClass]="{'short_cuts_color_onClick':item.applyColor}" (click)="item.applyColor=true" 
-        (click)="filters(item.label)">{{item.label}}</div>
+        <div class="p-2  short_cuts_color mr-2" *ngFor="let item of filtersLabels;index as i"
+          [ngClass]="{'short_cuts_color_onClick':item.applyColor}" (click)="item.applyColor=true"
+          (click)="filters(item.label)">{{item.label}}</div>
       </div>
       <div class="row">
         <div *ngFor="let item of customersData" class="col-xl-3 col-lg-3 col-md-4 col-sm-12 px-custom-card mb-3">
@@ -41,7 +41,7 @@
                 <div class="row">
                   <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12  ">Name</div>
                   <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12  ">
-                    <h6>{{item.details[0].name}}</h6>
+                    <h6>{{item.name}}</h6>
                   </div>
                 </div>
                 <div class="row">
@@ -93,8 +93,8 @@
         </button>
       </div>
       <div class="modal-body">
-        <div class="row">
-          <div class="col-lg-6">
+        <div>
+          <div *ngIf="!showProductsInModal">
             <form #singup="ngForm">
               <div class="form-group">
                 <label for="name">Name</label>
@@ -125,14 +125,17 @@
                 <select class="custom-select" name="line" required #line="ngModel" [(ngModel)]="customer.lineId"
                   [class.is-invalid]="line.invalid && line.touched" ngModel>
                   <option value="" disabled selected>Choose line</option>
-                  <option [ngValue]="items.lineId" *ngFor="let items of allLines">{{items.name}}</option>
+                  <option [ngValue]="items.id" *ngFor="let items of allLines">{{items.name}}</option>
                 </select>
                 <small class="text-danger" [class.d-none]="line.valid || line.untouched">Field required</small>
               </div>
+              <div *ngIf="buttonClickOFshowProudcts" (click)="buttonClickOFshowProudcts=false;showProductsInModal=true"
+                class="btn btn-primary"  >next</div>
+                <!-- (click)="onClickNextCreateCustomer(customer)" -->
             </form>
           </div>
-          <div class="col-lg-6">
-            <form #customerS2="ngForm" style="height:306px;overflow-y:auto;">
+          <div *ngIf="showProductsInModal">
+            <!-- <form #customerS2="ngForm" style="height:306px;overflow-y:auto;">
               <div *ngFor="let obj of paperslist;let i = index">
                 <div class="form-group">
                   <label for="sel1">Newspaper Type:-</label>
@@ -144,7 +147,8 @@
                 </div>
                 <div class="form-group">
                   <label for="number">Newspaper</label>
-                  <select class="custom-select" name="newspaper{{i}}" required #newspaper="ngModel" [(ngModel)]="obj.id"
+                  <select class="custom-select" name="newspaper{{i}}" required #newspaper="ngModel" 
+                  [(ngModel)]="obj.id"
                     [class.is-invalid]="newspaper.invalid && newspaper.touched" ngModel>
                     <option value="" disabled selected>Choose Newspaper</option>
                     <option [ngValue]="items.id" *ngFor="let items of obj.newsPapers">
@@ -180,14 +184,31 @@
                   </div>
                 </div>
               </div>
+            </form> -->
+            <form #customerS2="ngForm" style="height:306px;overflow-y:auto;">
+              <ul class="list-group">
+                <div *ngFor="let items of newspapers;index as i">
+                  <li (change)="heartochageinprdoctui(newUiproductObj[i],$event)"class="list-group-item mb-3">
+                    <div class="custom-control custom-checkbox">
+                      <input value="{{items.id}}"  type="checkbox"   
+                      class="custom-control-input" id="example1{{i}}"   name="checkbox">
+                      <label class="custom-control-label" for="example1{{i}}">{{items.productName}}</label>
+                    </div>
+                    <div class="form-group mt-2">
+                      <input type="text" class="form-control" [(ngModel)] ="newUiproductObj[i].aCharges"
+                      placeholder="Addtional Charges"  name="items.id" ngModel>
+                    </div>
+                  </li>
+                </div>
+              </ul>
             </form>
-            <button (click)="addNewsPaper()" class="btn btn-primary float-right">+</button>
+            <!-- <button (click)="addNewsPaper()" class="btn btn-primary float-right">+</button> -->
           </div>
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" [disabled]="singup.form.invalid" class="btn btn-primary"
-          (click)="modal.close('Save click')" (click)="saveCustomer(customer,paperslist)">Save</button>
+        <button type="button" class="btn btn-primary" (click)="modal.close('Save click')"
+          (click)="saveCustomer(customer,paperslist)">Save</button>
       </div>
     </ng-template>
     <!--Create Customer Ends-->

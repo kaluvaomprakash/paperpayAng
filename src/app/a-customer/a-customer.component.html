@@ -15,7 +15,7 @@
                                 src="https://www.gravatar.com/avatar/e102c74c9566066a4801f7e0d42eade6.jpg?s=200&d=mm">
                         </div>
                         <div class="col-lg-6 col-md-10 mt-4 col-sm-12">
-                            <h4>{{aCustomer.details[0].name}}</h4>
+                            <h4>{{aCustomer.name}}</h4>
                             <h6 class="mt-1 ml-1">12345</h6>
                         </div>
                         <div class="col-lg-4 col-md-10 mt-4 col-sm-12 ">
@@ -40,7 +40,7 @@
                                 (click)="AccountTab=false;commentTab=true;historyTab=false" tabindex="-1">Comments</a>
                         </li>
                         <li role="presentation" class="nav-item"><a role="tab" aria-selected="false"
-                                (click)="AccountTab=false;commentTab=false;historyTab=true" aria-setsize="3"
+                                (click)="AccountTab=false;commentTab=false;historyTab=true" (click)= "statemtnHistory()" aria-setsize="3"
                                 aria-posinset="2" target="_self" class="nav-link" tabindex="-1">History</a></li>
                     </ul>
                 </div>
@@ -58,11 +58,13 @@
                                 <div class="labelKeys">Mobile Number:</div>
                                 <div>{{aCustomer.mobileNumber}}</div>
                                 <div class="labelKeys">Address:</div>
-                                <div>{{aCustomer.details[1].plotNumber}}</div>
+                                <div>{{aCustomer.details[0].plotNumber}}</div>
                                 <div class="labelKeys">Due:</div>
                                 <div class="label label-primary">Paid</div>
                                 <div class="labelKeys">Created:</div>
-                                <div>{{aCustomer.created_date | date}}</div>
+                                <div>
+                                    {{aCustomer.createdDate.year}}-{{aCustomer.createdDate.month}}-{{aCustomer.createdDate.dayOfMonth}}
+                                </div>
                                 <div class="row" *ngFor="let pro of onlyCustomerProducts">
                                     <div class="col-xl-6 col-lg-5 col-md-6 col-sm-12">
                                         <div class="labelKeys">Newspapers</div>
@@ -119,23 +121,23 @@
                                 <div class="row" *ngFor="let itm of customerProductss; let itemIndex=index">
                                     <div class="col-xl-3 col-sm-12">
                                         <!-- <div class="labelKeys">MONTH</div> -->
-                                        <div class="pt-2">{{itm.customerRelatedObj.month}}</div>
+                                        <div class="pt-2">{{itm.pMonth}}</div>
                                     </div>
                                     <div class="col-xl-4 col-sm-12">
                                         <!-- <div class="labelKeys">DETAILS</div> -->
-                                        <div>{{itm.customerRelatedObj.productName}}</div>
+                                        <div>{{itm.productName}}</div>
                                         <div><a href="">more Detials</a></div>
                                     </div>
                                     <div class="col-xl-5 col-sm-12">
                                         <!-- <div class="labelKeys">CHARGES</div> -->
                                         <div>Monthly Charges <div class="float-right">
-                                                {{itm.customerRelatedObj.productMonthlyPrice}}</div>
+                                                {{itm.productMonthlyPrice}}</div>
                                         </div>
                                         <div>Addational Charges <div class="float-right">
-                                                {{itm.customerRelatedObj.productAddationalCharges}}</div>
+                                                {{itm.productAddationalCharges}}</div>
                                         </div>
 
-                                        <!-- <div *ngIf="itm.customerRelatedObj.productHoldIsActive == '1' ">
+                                        <!-- <div *ngIf="itm.productHoldIsActive == '1' ">
                                         <div>Hold Amount <div class="float-right">
                                             {{itm.productHold.holdProductAmount}}</div>
                                     </div>
@@ -207,19 +209,19 @@
                     <div class="col-xl-6 col-lg-5 col-md-6 col-sm-12 px-custom-card mb-3">
                         <div class="card">
                             <!-- before payment -->
-                            <div *ngIf="aCustomer.isPaid != '1';else notPaidCustomer ">
-                                <div class="card-header"><b>Payment</b></div>
+                            <div *ngIf = "customerpaidStatus != '1';else notPaidCustomer">
+                              <div class="card-header"><b>Payment</b></div>
                                 <div class="card-body">
                                     <div style="font-size: large;font-family: auto;">No payment yet! Would you like to
                                         <a style="color: skyblue;" (click)="reviePaymentModalOpen(recivePayment)">recive
                                             payment</a>?</div>
                                 </div>
-                            </div>
+                            </div> 
                             <!-- after payment -->
-                            <ng-template #notPaidCustomer>
+                             <ng-template #notPaidCustomer>
                                 <div class="card-header"><b>Recived Payment</b></div>
-                                <div class="card-body">{{justPaidAccounts}}</div>
-                            </ng-template>
+                                <!-- <div class="card-body">{{justPaidAccounts}}</div> -->
+                            </ng-template> 
                         </div>
                     </div>
                     <!-- Recive payment secod row right card starts -->
@@ -249,7 +251,7 @@
                         <div class="form-group row">
                             <label class="control-label col-4 labelKeyM">CUSTOMER</label>
                             <div class="col-8 form-control-static labelValues">
-                                {{paymentRecivedCustomer.details[0].name}}
+                                {{paymentRecivedCustomer.name}}
                             </div>
                         </div>
                         <div class="form-group row">
@@ -295,7 +297,7 @@
                         <div class="card mt-4 mr-4">
                             <div class="card-header">Discuss with omprakash kaluva....</div>
                             <div class="card-body">
-                                 <ul class="list-group list-group-flush" *ngFor="let item of allComments">
+                                <ul class="list-group list-group-flush" *ngFor="let item of allComments">
                                     <li class="list-group-item "
                                         *ngIf="item.msgfrom =='HackerPortal';else customerProtal ">
                                         <div class="comment_body_right">{{item.comment}}</div>
@@ -307,7 +309,7 @@
                                             <div class="commented_on_left">Commented on 02-April-2020</div>
                                         </li>
                                     </ng-template>
-                                </ul> 
+                                </ul>
                                 <form #singup="ngForm" class="mt-4">
                                     <div class="form-group">
                                         <textarea class="form-control" [(ngModel)]="comment" rows="2" id="comment"
@@ -345,10 +347,11 @@
                                     <div class="labelKeys">Amount</div>
                                 </div>
                             </div> -->
-                            <div class="row" *ngFor="let item of statementHistroy">
+                            
+                            <div class="row " *ngFor="let item of statementHistroy">
                                 <div class="col-xl-3 col-sm-12">
                                     <div class="labelKeys mx-2">Month-Year</div>
-                                    <div>{{item.savemonth}} {{item.year}}</div>
+                                    <div>{{item.month}} {{item.year}}</div>
                                 </div>
                                 <div class="col-xl-3 col-sm-12">
                                     <div class="labelKeys">Payment Date</div>
