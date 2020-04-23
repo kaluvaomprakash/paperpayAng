@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { RestServiceService } from '../rest-service.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { NgbModal, NgbCalendar, NgbDateStruct, NgbDate } from '@ng-bootstrap/ng-bootstrap';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-a-customer',
@@ -13,7 +14,8 @@ export class ACustomerComponent implements OnInit {
   constructor(private restService: RestServiceService,
     private router: ActivatedRoute,
     private modalService: NgbModal
-    , calendar: NgbCalendar) { }
+    , calendar: NgbCalendar,
+    private toaster: ToastrService) { }
   //data Google variable declarations
   aCustomer;
   datePicker
@@ -31,26 +33,58 @@ export class ACustomerComponent implements OnInit {
   tDate: NgbDateStruct;
   toDate1;
   fromDate1;
-  AccountTab:Boolean=true;
-  commentTab:Boolean=false;
-  historyTab:Boolean=false;
+  AccountTab: Boolean = true;
+  commentTab: Boolean = false;
+  historyTab: Boolean = false;
   keepingTabActive;
-  statementHistroy=[];
-  comment;
-  allComments=[];
- customerpaidStatus;
+  statementHistroy = [];
+  comment: String = "";
+  allComments = [];
+  customerpaidStatus;
+  statementOFpaidcustomer;
+
   //Methods
+
   customer() {
     var cutomerId = parseInt(this.router.snapshot.paramMap.get('id'));
     this.restService.getCallwithOut("http://localhost:8080/nestpay/Customers/" + cutomerId).subscribe(
       (data) => {
+        debugger;
         data["details"] = JSON.parse(data["details"]);
         this.aCustomer = data;
-        this.customerpaidStatus =data["customerPaid"];
+        this.customerpaidStatus = data["customerPaid"];
+        if (this.customerpaidStatus == '1') {
+          this.paidProductsOfCustomer();
+          this.statementofCustomer();
+        } else {
+          this.productsOfCustomer();
+        }
         console.log("datat" + this.aCustomer);
       })
   }
-
+  paidProductsOfCustomer() {
+    var cutomerId = parseInt(this.router.snapshot.paramMap.get('id'));
+    var date = new Date();
+    this.restService.getCallwithOut("http://localhost:8080/nestpay/customerProducts/" + cutomerId + "/" 
+    + this.monthsInYear[date.getMonth()-1] + "/" + date.getFullYear()).subscribe(
+      (data) => {
+        // debugger
+        this.customerProductss = data;
+        this.prepareProductsArray(data);
+        console.log("customerProduct " + JSON.stringify(data));
+      })
+  }
+  statementofCustomer() {
+    var cutomerId = parseInt(this.router.snapshot.paramMap.get('id'));
+    var date = new Date();
+    //http://localhost:8080/nestpay/account/statment/210/2020/march
+    this.restService.getCallwithOut("http://localhost:8080/nestpay/account/statment/" + cutomerId + "/" + date.getFullYear() + "/" + this.monthsInYear[date.getMonth()-1]).subscribe(
+      (data) => {
+       debugger
+        this.statementOFpaidcustomer = data;
+        console.log("statemtn " + JSON.stringify(data));
+      })
+  }
   productsOfCustomer() {
     var cutomerId = parseInt(this.router.snapshot.paramMap.get('id'));
     this.restService.getCallwithOut("http://localhost:8080/nestpay/customerProducts/product/" + cutomerId + "/0").subscribe(
@@ -118,7 +152,7 @@ export class ACustomerComponent implements OnInit {
     var currentMonth = this.monthsInYear[date.getMonth()]
     this.onlyCustomerProducts = arr.map(
       (item) => {
-        if (item.pMonth == 'MARCH') {
+        if (item.pMonth == this.monthsInYear[date.getMonth()-1]) {
           var months = {};
           months['product'] = item.productName;
           months['id'] = item.id;
@@ -137,43 +171,43 @@ export class ACustomerComponent implements OnInit {
 
   onClickOfProHoldCalender(item) {
     console.log(item)
-    this.num++; 
+    this.num++;
     console.log(this.num);
     if (this.num == 3) {
       debugger
-     
+
 
 
 
     }
-   
+
     else {
       if ((this.num % 2 != 0)) {
         console.log("in if");
         this.frDate = NgbDate.from(this.datePicker);
         var fromDate = new Date(this.frDate.year, this.frDate.month - 1, this.frDate.day);
-         this.fromDate1 = fromDate.getFullYear() + '-' + ('0' + (fromDate.getMonth() + 1)).slice(-2) + '-' + ('0' + (fromDate.getDate() + 1)).slice(-2);
+        this.fromDate1 = fromDate.getFullYear() + '-' + ('0' + (fromDate.getMonth() + 1)).slice(-2) + '-' + ('0' + (fromDate.getDate() + 1)).slice(-2);
         console.log("in if" + this.fromDate1);
       } else {
         console.log("in else");
         this.tDate = NgbDate.from(this.datePicker);
         var toDate = new Date(this.tDate.year, this.tDate.month - 1, this.tDate.day);
-         this.toDate1 = toDate.getFullYear() + '-' + ('0' + (toDate.getMonth() + 1)).slice(-2) + '-' + ('0' + (toDate.getDate() + 1)).slice(-2);
+        this.toDate1 = toDate.getFullYear() + '-' + ('0' + (toDate.getMonth() + 1)).slice(-2) + '-' + ('0' + (toDate.getDate() + 1)).slice(-2);
         console.log("toDate1 " + this.toDate1);
         var phObj = {};
         phObj["hackerId"] = item.hackerId;
         phObj["customerId"] = item.customerId;
         phObj["productId"] = item.productId;
         phObj["customerProductId"] = item.id;
-        phObj["productHoldStartDate"] =this.fromDate1;
+        phObj["productHoldStartDate"] = this.fromDate1;
         phObj["productHoldEndDate"] = this.toDate1;
         phObj["holdProductAmount"] = 0;
         phObj["isActive"] = 0
         let posturl = "http://localhost:8080/spring-crm-rest/pH/newph";
         this.restService.putCallWithObserable(posturl, (phObj)).subscribe((data) => {
           console.log("in put url" + data);
-       //   this.showCustomerProductDetails(item.customerId)
-         // this.closeproductHoldCaldr = false;
+          //   this.showCustomerProductDetails(item.customerId)
+          // this.closeproductHoldCaldr = false;
         });
       }
     }
@@ -186,36 +220,38 @@ export class ACustomerComponent implements OnInit {
       })
   }
 
-  sendComment(comment){
+  sendComment(comment) {
     var cutomerId = parseInt(this.router.snapshot.paramMap.get('id'));
-    console.log("comment " +comment);
-    var dbobj={};
+    console.log("comment " + comment);
+    var dbobj = {};
     dbobj["hackerId"] = 0,
-    dbobj["customerId"] = cutomerId;
-    dbobj["msgfrom"] = "HackerPortal";
+      dbobj["customerId"] = cutomerId;
+    dbobj["messageFrom"] = "HackerPortal";
     dbobj["comment"] = comment;
-    this.restService.postData("http://localhost:8080/spring-crm-rest/comment/newcomment", dbobj).subscribe(
+    this.restService.postData("http://localhost:8080/nestpay/comments/newComment", dbobj).subscribe(
       (data) => {
         console.log("data" + data);
+        //this.comment='';
+        this.toaster.success("commented succesfully", "Success");
         this.viewAllComments();
       }
     )
   }
   viewAllComments() {
     var cutomerId = parseInt(this.router.snapshot.paramMap.get('id'));
-    this.restService.getCallwithOut("http://localhost:8080/spring-crm-rest/comment/commts/" + cutomerId).subscribe(
+    this.restService.getCallwithOut("http://localhost:8080/nestpay/comments/commentList/" + cutomerId).subscribe(
       (data) => {
-          this.allComments = data;
+        this.allComments = data;
         //console.log("datat " + JOSN.stringify(this.allComments));
       })
   }
-  pushcode(){
+  pushcode() {
     console.log();
   }
   ngOnInit() {
     this.customer();
-    this.productsOfCustomer();
-   // this.statemtnHistory();
+   // this.productsOfCustomer();
+    // this.statemtnHistory();
     //this.viewAllComments();
   }
 

@@ -24,7 +24,7 @@ h4{
     font-family: auto;
     font-size: large;
     /* font-size: 15px; */
-    font-weight: 400;
+    font-weight: bold;
 }
 
 .labelKeyM{
@@ -36,14 +36,14 @@ h4{
   }
 .comment_body_right{
     background: #cfedfb;
-    float: right;
+    /* float: right; */
     border-radius: 3px;
     padding:5px 15px;
     width:280px;
 }
 .commented_on_right{
     clear: both;
-    text-align: right;
+    /* text-align: right; */
     padding-right: 15px;
     color: #909599;
     font-size: 13px;
