@@ -16,6 +16,7 @@ export class NewCustomerComponent implements OnInit {
     private toaster: ToastrService, private routers: Router) { }
 
   //data
+  inputValues: any = [];
   customersData = []
   elimit: number = 8; slimit: number = 0;
   allLines;
@@ -60,7 +61,7 @@ export class NewCustomerComponent implements OnInit {
   buttonClickOFshowProudcts: boolean = true;
   showACtextBox: any = [];
   newUiproductObj: any = [];
-  emptyArray:any=[];
+  emptyArray: any = [];
   //methods
   getCustomers() {
     // debugger;
@@ -116,17 +117,9 @@ export class NewCustomerComponent implements OnInit {
       (data) => {
         debugger
         this.allLines = data;
-        this.newUiproductObj = this.allLines.map(
-          (data, index) => {
-            //console.log(index);
-            var obj = {};
-            obj['aCharges'] = 0;
-            obj['productId']=0;
-            return obj;
-          }
-        )
 
-        console.log("array" + JSON.stringify(this.newUiproductObj));
+
+        //console.log("array" + JSON.stringify(this.newUiproductObj));
       });
 
     this.modalService.open(content, { centered: true, size: 'sm' });
@@ -213,6 +206,24 @@ export class NewCustomerComponent implements OnInit {
     this.restService.getCustomers(getlines).subscribe(
       (data) => {
         this.newspapers = data;
+        //this.newspapers = this.newspapers.map(
+        // (item) => {
+        //   item["show_comment_box"] = false;
+        //   return item;
+        // }
+        // )
+        //console.log(JSON.stringify(this.newspapers));
+        this.newUiproductObj = this.newspapers.map(
+          (data, index) => {
+            //console.log(index);
+            var obj = {};
+            obj['aCharges'] = 0;
+            obj['product'] = false;
+            return obj;
+          }
+
+        )
+        console.log(this.newUiproductObj)
         this.addNewsPaper();
       });
   }
@@ -281,22 +292,71 @@ export class NewCustomerComponent implements OnInit {
     dbObj["password"] = "12345";
     dbObj["totalAmount"] = 0;
     dbObj["name"] = customer.name
-    dbObj["details"] = customer.plotNumber;
+    newarr.push({ "plotNumber": customer.plotNumber })
+    dbObj["details"] = JSON.stringify(newarr);
     dbObj["isActive"] = 1;
     dbObj["additionalCharges"] = 0;
     let posturl = "http://localhost:8080/nestpay/Customers/newCustomer";
     this.restService.postData(posturl, (dbObj)).subscribe(data => {
-      console.log("POST Request is successful ");
+      console.log("POST Request is successful " + data);
       this.toaster.success("Customer Added successfully", "Success");
-      this.getCustomers();
+      this.new_product(data["id"]);
+     
     },
       error => {
         this.toaster.error("please check your internet", "Failed");
         console.log("Eerror", error);
-      }); ``
+      }); 
   }
-  heartochageinprdoctui(newUiproductObj,event) {
-    console.log(JSON.stringify(newUiproductObj)+" "+JSON.stringify(event));
+  new_product(id) {
+    var url = "http://localhost:8080/nestpay/customerProducts/newcustomerProduct";
+    var inputValues1x = this.inputValues.map(
+      (item)=>{
+        return item.customerId = id;
+      })
+    this.restService.postData(url,this.inputValues).subscribe(
+      (data) => {
+        console.log(data);
+        this.getCustomers();
+        this.toaster.success("Product Added successfully", "Success");
+      }, error => {
+        console.log(error)
+        this.toaster.error("something went wrong DUCKED", "Failed");
+      })
+  }
+  heartochageinprdoctui(newUiproductObj, id, event) {
+    console.log("hear to change of proudct ui")
+    console.log(JSON.stringify(newUiproductObj) + " " + JSON.stringify(event) + " " + JSON.stringify(id));
+
+
+  }
+  show_comment_box(newUiproductObj, obj) {
+    console.log("in show_comment_box " + JSON.stringify(newUiproductObj) + " " + JSON.stringify(obj));
+    newUiproductObj["customerId"] = 0;
+    newUiproductObj["productId"] = obj.id;
+    newUiproductObj["productName"] = obj.productName;
+    newUiproductObj["productType"] = "weekProduct";
+    newUiproductObj["aCharges"] = newUiproductObj.aCharges;
+    newUiproductObj["isRecursive"] = "existingProduct";
+    var date = new Date();
+    var lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+    var todaydate = date.getFullYear() + '-' + ('0' + (date.getMonth() + 1)).slice(-2) + '-' + ('01');
+    var monthlastDate = lastDay.getFullYear() + '-' + ('0' + (lastDay.getMonth() + 1)).slice(-2) + '-' + ('0' + lastDay.getDate()).slice(-2);
+    newUiproductObj["productStartDate"] = todaydate;
+    newUiproductObj["productEndDate"] = monthlastDate;
+    if (newUiproductObj.product) {
+      newUiproductObj.productId = false
+      this.inputValues = this.inputValues.filter(
+        (item) => {
+          return item.productId != obj.id
+        })
+    }
+    else {
+      newUiproductObj.product = true
+      this.inputValues.push(newUiproductObj);
+    }
+
+    console.log("this.inputValues "+JSON.stringify(this.inputValues));
   }
   ngOnInit() {
     this.getCustomers();

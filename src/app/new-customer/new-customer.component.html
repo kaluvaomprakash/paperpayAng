@@ -130,8 +130,8 @@
                 <small class="text-danger" [class.d-none]="line.valid || line.untouched">Field required</small>
               </div>
               <div *ngIf="buttonClickOFshowProudcts" (click)="buttonClickOFshowProudcts=false;showProductsInModal=true"
-                class="btn btn-primary"  >next</div>
-                <!-- (click)="onClickNextCreateCustomer(customer)" -->
+                class="btn btn-primary">next</div>
+              <!-- (click)="onClickNextCreateCustomer(customer)" -->
             </form>
           </div>
           <div *ngIf="showProductsInModal">
@@ -188,15 +188,16 @@
             <form #customerS2="ngForm" style="height:306px;overflow-y:auto;">
               <ul class="list-group">
                 <div *ngFor="let items of newspapers;index as i">
-                  <li (change)="heartochageinprdoctui(newUiproductObj[i],$event)"class="list-group-item mb-3">
+                  <li class="list-group-item mb-3">
                     <div class="custom-control custom-checkbox">
-                      <input value="{{items.id}}"  type="checkbox"   
-                      class="custom-control-input" id="example1{{i}}"   name="checkbox">
+                      <input value="{{items.id}}" (ngModelChange)="show_comment_box(newUiproductObj[i],items)"
+                        class="custom-control-input" id="example1{{i}}" name="checkbox"
+                        [(ngModel)]="newUiproductObj[i].product" type="checkbox" />
                       <label class="custom-control-label" for="example1{{i}}">{{items.productName}}</label>
                     </div>
-                    <div class="form-group mt-2">
-                      <input type="text" class="form-control" [(ngModel)] ="newUiproductObj[i].aCharges"
-                      placeholder="Addtional Charges"  name="items.id" ngModel>
+                    <div class="form-group mt-2" *ngIf="newUiproductObj[i].productId">
+                      <input type="text" class="form-control" [(ngModel)]="newUiproductObj[i].aCharges"
+                        placeholder="Addtional Charges" name="items.id" ngModel>
                     </div>
                   </li>
                 </div>
@@ -208,7 +209,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-primary" (click)="modal.close('Save click')"
-          (click)="saveCustomer(customer,paperslist)">Save</button>
+          (click)="onClickNextCreateCustomer(customer)">Save</button>
       </div>
     </ng-template>
     <!--Create Customer Ends-->
