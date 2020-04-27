@@ -65,7 +65,7 @@ export class ACustomerComponent implements OnInit {
   paidProductsOfCustomer() {
     var cutomerId = parseInt(this.router.snapshot.paramMap.get('id'));
     var date = new Date();
-    this.restService.getCallwithOut("http://localhost:8080/nestpay/customerProducts/" + cutomerId + "/" 
+    this.restService.getCallwithOut("http://localhost:8080/nestpay/customerProducts/"+ cutomerId + "/" 
     + this.monthsInYear[date.getMonth()-1] + "/" + date.getFullYear()).subscribe(
       (data) => {
         // debugger
@@ -152,7 +152,7 @@ export class ACustomerComponent implements OnInit {
     var currentMonth = this.monthsInYear[date.getMonth()]
     this.onlyCustomerProducts = arr.map(
       (item) => {
-        if (item.pMonth == this.monthsInYear[date.getMonth()-1]) {
+        if (item.pMonth == (this.monthsInYear[date.getMonth()] || this.monthsInYear[date.getMonth()-1])) {
           var months = {};
           months['product'] = item.productName;
           months['id'] = item.id;

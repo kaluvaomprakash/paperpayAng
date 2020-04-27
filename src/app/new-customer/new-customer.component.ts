@@ -358,6 +358,11 @@ export class NewCustomerComponent implements OnInit {
 
     console.log("this.inputValues "+JSON.stringify(this.inputValues));
   }
+  show_more_details_of_Customer(id){
+    console.log(id);
+    //customer/210
+    this.routers.navigateByUrl('customer/'+id);
+  }
   ngOnInit() {
     this.getCustomers();
   }

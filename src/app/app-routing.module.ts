@@ -7,11 +7,12 @@ import { SignupComponent } from './signup/signup.component';
 import { NewspapersComponent } from './newspapers/newspapers.component';
 import { ACustomerComponent } from './a-customer/a-customer.component';
 import { NewCustomerComponent } from './new-customer/new-customer.component';
+import { NavsidebarComponent } from './navsidebar/navsidebar.component';
 
 
 
 const routes: Routes = [
-{path:'',redirectTo:"/customers",pathMatch:"full"},
+{path:'',redirectTo:"/newcustomers",pathMatch:"full"},
 {path:"signup",component:SignupComponent},
 {path:"login",component:LoginComponent},
 {path:"customers",component:CustomersComponent},
@@ -19,6 +20,7 @@ const routes: Routes = [
 {path:"statement",component:StatementComponent},
 {path:"newspapers",component:NewspapersComponent},
 {path:"customer/:id",component:ACustomerComponent},
+{path:"home",component:NavsidebarComponent},
 {path:"**",component:LoginComponent}
 ];
 

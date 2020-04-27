@@ -14,3 +14,6 @@
     text-align: center;
     color: white;
 }
+.more_details:hover{
+    text-decoration: underline;
+}

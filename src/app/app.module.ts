@@ -19,6 +19,7 @@ import { NewCustomerComponent } from './new-customer/new-customer.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
  import {ToastrModule} from 'ngx-toastr'
 import { TimeoutError } from 'rxjs';
+import { NavsidebarComponent } from './navsidebar/navsidebar.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { TimeoutError } from 'rxjs';
     StatementComponent,
     NewspapersComponent,
     ACustomerComponent,
-    NewCustomerComponent
+    NewCustomerComponent,
+    NavsidebarComponent
   ],
   imports: [
     BrowserModule,

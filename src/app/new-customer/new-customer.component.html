@@ -56,6 +56,12 @@
                     <h6>{{item.totalAmount}}</h6>
                   </div>
                 </div>
+                <div class="row">
+                   <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12"></div> 
+                  <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 ">
+                    <h6 class="more_details" style="color: blue;" (click)="show_more_details_of_Customer(item.id)">More Details</h6>
+                  </div>
+                </div>
                 <!-- <div class="d-inline-flex">
                                     <div class="p-2">name</div>
                                     <div class="p-2">{{item.details[0].name}}</div>
