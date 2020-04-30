@@ -17,7 +17,7 @@
     width: 200px;
     height: 100%;
     background: #4b4276;
-    padding:30px 0;
+    padding:0 0 30px 0;
 }
 
 .wrapper .sidebar h3{
@@ -25,6 +25,8 @@
     text-transform: capitalize;
     text-align: center;
     margin-bottom: 20px;
+    padding: 16px 0;
+    border-bottom: 1px solid rgba(0, 0, 0,0.05);
 }
 
 .wrapper .sidebar ul li{
@@ -45,8 +47,8 @@
 }
 .wrapper .sidebar ul li:hover{
     background:  #594f8d;
-    border-top-right-radius: 5px;
-    border-top-left-radius: 5px;
+    border-radius: 50px;
+    border-radius: 50px;
 }
 .wrapper .sidebar ul li:hover a{
     color:#fff;
@@ -62,4 +64,27 @@
     background: #fff;
     color: #717171;
     border-bottom: 1px solid #e0e4e8;
+}
+
+.log_out_profile{
+    text-align: center;
+    margin: 15px;
+}
+.log_out_profile a{
+    color: #bdb8d7;
+    
+}
+.log_out_profile a .fas {
+    width: 75px;
+  
+}
+.log_out_profile a :hover{
+    background:  #594f8d;
+    
+    border-radius: 50px;
+    border-radius: 50px;
+}
+.log_out_profile a:hover a{
+    color:#fff;
+    
 }
