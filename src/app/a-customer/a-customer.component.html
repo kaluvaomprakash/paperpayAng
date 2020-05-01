@@ -1,6 +1,7 @@
 <div class=container-fluid>
     <div class="row">
         <div class="col-lg-2 col-md-0 col-sm-0 col-xs-0">
+            <!-- <app-navsidebar></app-navsidebar> -->
             <app-sidebar></app-sidebar>
         </div>
         <div class="col-lg-10 col-md-12 col-sm-12 col-xs-12">
@@ -67,15 +68,15 @@
                                 <div>
                                     {{aCustomer.createdDate.year}}-{{aCustomer.createdDate.month}}-{{aCustomer.createdDate.dayOfMonth}}
                                 </div>
-                                <div class="row" *ngFor="let pro of onlyCustomerProducts">
-                                    <div class="col-xl-6 col-lg-5 col-md-6 col-sm-12">
+                                <!-- <div class="row" *ngFor="let pro of onlyCustomerProducts"> -->
+                                    <!-- <div class="col-xl-6 col-lg-5 col-md-6 col-sm-12">
                                         <div class="labelKeys">Newspapers</div>
                                         <div>{{pro.product}}</div>
-                                    </div>
-                                    <div class="col-xl-6 col-lg-5 col-md-6 col-sm-12">
+                                    </div> -->
+                                    <!-- <div class="col-xl-6 col-lg-5 col-md-6 col-sm-12">
                                         <div class="labelKeys">Status</div>
                                         <div style="color: blue; text-decoration-line: underline;cursor: pointer;">
-                                            Active</div>
+                                            Active</div> -->
 
                                         <!-- <div ngbDropdown class="d-inline-block"
                                         *ngIf="pro.productHoldStatus == 0;else showHoldDiv"
@@ -90,13 +91,13 @@
                                             </div>
                                         </div> 
                                     </div> -->
-                                    </div>
-                                    <ng-template #showHoldDiv>
+                                    <!-- </div> -->
+                                    <!-- <ng-template #showHoldDiv>
                                         <div style="color: red; text-decoration-line: underline;">Hold</div>
-                                    </ng-template>
+                                    </ng-template> -->
 
 
-                                </div>
+                                <!-- </div> -->
                             </div>
                         </div>
                     </div>

@@ -70,7 +70,7 @@ export class ACustomerComponent implements OnInit {
       (data) => {
         // debugger
         this.customerProductss = data;
-        this.prepareProductsArray(data);
+        //this.prepareProductsArray(data);
         console.log("customerProduct " + JSON.stringify(data));
       })
   }

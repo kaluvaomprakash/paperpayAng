@@ -117,11 +117,8 @@ export class NewCustomerComponent implements OnInit {
       (data) => {
         debugger
         this.allLines = data;
-
-
         //console.log("array" + JSON.stringify(this.newUiproductObj));
       });
-
     this.modalService.open(content, { centered: true, size: 'sm' });
   }
   addNewsPaper() {
@@ -331,6 +328,7 @@ export class NewCustomerComponent implements OnInit {
 
   }
   show_comment_box(newUiproductObj, obj) {
+    debugger
     console.log("in show_comment_box " + JSON.stringify(newUiproductObj) + " " + JSON.stringify(obj));
     newUiproductObj["customerId"] = 0;
     newUiproductObj["productId"] = obj.id;
@@ -360,8 +358,13 @@ export class NewCustomerComponent implements OnInit {
   }
   show_more_details_of_Customer(id){
     console.log(id);
-    //customer/210
     this.routers.navigateByUrl('customer/'+id);
+  }
+  edit_customer(content,item){
+    console.log("item eidti "+JSON.stringify(item));
+    this.openVerticallyCentered(content);
+    this.customer.plotNumber = item.details[0].plotNumber;
+    this.customer = item;
   }
   ngOnInit() {
     this.getCustomers();
