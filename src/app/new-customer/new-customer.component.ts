@@ -23,6 +23,7 @@ export class NewCustomerComponent implements OnInit {
   newspapers;
   showDate: Boolean = true;
   paperslist = [];
+  imageurl:'';
   customer = {
     "name": "",
     "mobileNumber": "",
@@ -293,7 +294,8 @@ export class NewCustomerComponent implements OnInit {
     dbObj["details"] = JSON.stringify(newarr);
     dbObj["isActive"] = 1;
     dbObj["additionalCharges"] = 0;
-    let posturl = "http://localhost:8080/nestpay/Customers/newCustomer";
+    var image_url = this.imageurl?this.imageurl:"noimage";
+    let posturl = "http://localhost:8080/nestpay/Customers/newCustomer?theimage="+image_url;
     this.restService.postData(posturl, (dbObj)).subscribe(data => {
       console.log("POST Request is successful " + data);
       this.toaster.success("Customer Added successfully", "Success");

@@ -103,6 +103,15 @@
         <div>
           <div *ngIf="!showProductsInModal">
             <form #singup="ngForm">
+              <!-- <div style="text-align: center;">
+                <img style="width: 60px;height: 60px; border-radius: 50%;"
+                    src="https://www.gravatar.com/avatar/e102c74c9566066a4801f7e0d42eade6.jpg?s=200&d=mm">
+            </div> -->
+           
+            <div class="form-group">
+              <label for="image">image</label>
+              <input type='file' [(ngModel)]="imageurl" name="imageulr" id="imageUpload" accept=".png, .jpg, .jpeg" />
+            </div>
               <div class="form-group">
                 <label for="name">Name</label>
                 <input type="text" class="form-control" placeholder="Name" name="name" #name="ngModel"
